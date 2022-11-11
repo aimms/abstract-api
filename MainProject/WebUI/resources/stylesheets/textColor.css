@@ -1,0 +1,22 @@
+/*Link color*/
+.ql-snow a {  
+    color: var(--primaryLight) !important; 
+}
+
+/*Change checkbox color*/
+input.boolean-cell-editor-contents {
+  accent-color: var(--primary);
+}
+
+.aimms-widget .ui-button {
+  text-transform: uppercase;
+}
+
+/*Changing tittle to be uppercase*/
+.title-addon,
+.ui-dialog .ui-dialog-title {
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px var(--primary);
+  color: whitesmoke;
+}
+

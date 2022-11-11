@@ -1,0 +1,5 @@
+.annotation-blue{
+  /* fill changes */
+  fill: var(--secondaryDark);
+  fill-opacity: .6;
+}

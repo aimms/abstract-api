@@ -1,0 +1,24 @@
+:root {
+  --secondaryLight: #7DEBF5;
+  --secondary: #3DD9EB;
+  --secondaryDark: #00B3D7;
+  --primaryLight: #F55376;
+  --primary: #EB0000;
+  --primaryLightest: #FA91AD;
+  
+  --bg_app-logo: 15px 50% / 30px 30px no-repeat url(/app-resources/resources/images/ipTwist.png);
+  --spacing_app-logo_width: 45px;
+
+  --color_border-divider_themed: var(--primaryLight);
+  --color_text_edit-select-link: var(--primaryLight);
+  --color_text_edit-select-link_hover: var(--primary);
+  --color_bg_edit-select-link_inverted: var(--secondary);
+  --color_bg_button_primary: var(--secondary);
+  --color_bg_button_primary_hover: var(--secondaryLight);
+  --color_text_button_secondary: var(--secondary);
+  --border_button_secondary: 1px solid var(--secondary);
+  --color_text_button_secondary_hover: var(--primary);
+  --border_button_secondary_hover: 1px solid var(--primary);
+  --color_bg_widget-header: var(--primary);
+  --border_widget-header: 3px solid var(--primaryLightest);
+}

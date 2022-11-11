@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<AimmsJSONMapping iterative-reset="ipTwist::i_childInstance,dex::schema::childNode,dex::schema::extbinding">
+	<ExternalBinding binds-to="ipTwist::i_instance" binding="ipTwist::CurrentInstance" />
+	<ObjectMapping>
+		<ValueMapping name="ip" maps-to="ipTwist::_Response::ip(ipTwist::i_instance)" />
+		<ValueMapping name="city" maps-to="ipTwist::_Response::city(ipTwist::i_instance)" />
+		<ValueMapping name="country" maps-to="ipTwist::_Response::country(ipTwist::i_instance)" />
+		<ValueMapping name="country_code" maps-to="ipTwist::_Response::country_code(ipTwist::i_instance)" />
+		<ValueMapping name="latitude" maps-to="ipTwist::_Response::latitude(ipTwist::i_instance)" />
+		<ValueMapping name="longitude" maps-to="ipTwist::_Response::longitude(ipTwist::i_instance)" />
+		<ValueMapping name="state" maps-to="ipTwist::_Response::state(ipTwist::i_instance)" />
+		<ValueMapping name="timezone" maps-to="ipTwist::_Response::timezone_(ipTwist::i_instance)" />
+		<ValueMapping name="zip" maps-to="ipTwist::_Response::zip(ipTwist::i_instance)" />
+	</ObjectMapping>
+</AimmsJSONMapping>

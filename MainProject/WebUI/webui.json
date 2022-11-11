@@ -1,0 +1,517 @@
+{
+  "version": "4.67.0",
+  "application": {
+    "aimms.widget.type": {
+      "literal": "application"
+    },
+    "browsername": {
+      "aimms": {
+        "contents": [
+          "webui::ClientBrowserName"
+        ]
+      }
+    },
+    "browsertimezone": {
+      "aimms": {
+        "contents": [
+          "webui::BrowserTimeZone"
+        ]
+      }
+    },
+    "ignoredst": {
+      "aimms": {
+        "contents": [
+          "webui::IgnoreDST"
+        ]
+      }
+    },
+    "pages": {
+      "literal": {
+        "name": "root",
+        "slug": "root",
+        "children": [
+          {
+            "name": "Main Project",
+            "slug": "main_project",
+            "children": [
+              {
+                "name": "home",
+                "slug": "home",
+                "type": "pagev2-grid",
+                "children": []
+              },
+              {
+                "name": "Welcome",
+                "type": "pagev2-grid",
+                "slug": "welcome",
+                "children": []
+              },
+              {
+                "name": "FindIp",
+                "type": "pagev2-grid",
+                "slug": "findip",
+                "children": [
+                  {
+                    "name": "dialogEnsureAPI",
+                    "type": "pagev2-grid-dialog",
+                    "slug": "dialogensureapi",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "theme.classic": {
+      "literal": "NOT_ALLOWED"
+    },
+    "timezone": {
+      "aimms": {
+        "contents": [
+          "webui::DisplayTimeZone"
+        ]
+      }
+    },
+    "timezone.dst.readonly": {
+      "aimms": {
+        "contents": [
+          "webui::DefaultDSTSettingForDisplayTimeZone"
+        ]
+      }
+    },
+    "workflows.configuration": {
+      "aimms": {
+        "contents": [
+          "sp_myWorkflowSteps"
+        ],
+        "slices": [
+          {
+            "identifier": "sp_myWorkflowSteps",
+            "slice": [
+              {
+                "index": "webui::indexWorkflowOrder",
+                "type": "free",
+                "value": "webui::indexWorkflowOrder"
+              },
+              {
+                "index": "webui::indexNoOfPages",
+                "type": "free",
+                "value": "webui::indexNoOfPages"
+              },
+              {
+                "index": "webui::indexWorkflowPageSpec",
+                "type": "free",
+                "value": "webui::indexWorkflowPageSpec"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "layouts/custom_30c67799-9f09-4e00-8bf6-379c37ccd041": {
+    "definition": {
+      "literal": {
+        "componentName": "Grid",
+        "props": {
+          "gridTemplateColumns": "1fr 1fr",
+          "gridTemplateRows": "1fr",
+          "gridTemplateAreas": "\"area-a area-b\""
+        },
+        "items": [
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-a",
+              "name": "Area A",
+              "gridAutoFlow": "row"
+            }
+          },
+          {
+            "componentName": "WidgetArea",
+            "props": {
+              "gridArea": "area-b",
+              "name": "Area B",
+              "gridAutoFlow": "column"
+            }
+          }
+        ]
+      }
+    },
+    "displayName": {
+      "literal": "FindIP"
+    }
+  },
+  "pages/dialogensureapi": {
+    "aimms.widget.type": {
+      "literal": "pagev2-grid-dialog"
+    },
+    "bindings": {
+      "literal": [
+        {
+          "widgetUri": "txt_apiKeyHelp",
+          "gridArea": "area-a",
+          "dndId": "area-atxt_apiKeyHelp1"
+        },
+        {
+          "widgetUri": "scalarObtainAPIkey",
+          "gridArea": "area-a",
+          "dndId": "area-ascalarObtainAPIkey0"
+        }
+      ]
+    },
+    "layoutId": {
+      "literal": "Layout11"
+    },
+    "maxcolumns": {
+      "literal": 3
+    },
+    "maxrows": {
+      "literal": 2
+    },
+    "widgets": {
+      "literal": [
+        {
+          "uri": "scalarObtainAPIkey",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        },
+        {
+          "uri": "txt_apiKeyHelp",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        }
+      ]
+    }
+  },
+  "pages/findip": {
+    "aimms.widget.type": {
+      "literal": "pagev2-grid"
+    },
+    "bindings": {
+      "literal": [
+        {
+          "widgetUri": "mapMyLocation",
+          "gridArea": "area-b",
+          "dndId": "Unassigned widgetsmapMyLocation1"
+        },
+        {
+          "widgetUri": "scalarIpAddress",
+          "gridArea": "area-a",
+          "dndId": "area-ascalarIpAddress0"
+        }
+      ]
+    },
+    "layoutId": {
+      "literal": "custom_30c67799-9f09-4e00-8bf6-379c37ccd041"
+    },
+    "secondarypageactions": {
+      "aimms": {
+        "contents": [
+          "sp_findIpSecondaryActions"
+        ],
+        "slices": [
+          {
+            "identifier": "sp_findIpSecondaryActions",
+            "slice": [
+              {
+                "index": "webui::indexPageExtension",
+                "type": "free",
+                "value": "webui::indexPageExtension"
+              },
+              {
+                "index": "webui::indexPageActionSpec",
+                "type": "free",
+                "value": "webui::indexPageActionSpec"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "widgets": {
+      "literal": [
+        {
+          "uri": "scalarIpAddress",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        },
+        {
+          "uri": "mapMyLocation",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        }
+      ]
+    }
+  },
+  "pages/home": {
+    "aimms.widget.type": {
+      "literal": "pagev2-grid"
+    },
+    "bindings": {
+      "literal": [
+        {
+          "widgetUri": "img_homeLogo",
+          "gridArea": "area-d",
+          "dndId": "area-aimg_homeLogo0"
+        },
+        {
+          "widgetUri": "txt_welcome",
+          "gridArea": "area-a",
+          "dndId": "area-atxt_welcome1"
+        }
+      ]
+    },
+    "layoutId": {
+      "literal": "Layout10"
+    },
+    "widgets": {
+      "literal": [
+        {
+          "uri": "img_homeLogo",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        },
+        {
+          "uri": "txt_welcome",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        }
+      ]
+    }
+  },
+  "pages/welcome": {
+    "aimms.widget.type": {
+      "literal": "pagev2-grid"
+    },
+    "layoutId": {
+      "literal": "Layout1"
+    }
+  },
+  "widgets/img_homeLogo": {
+    "aimms.widget.type": {
+      "literal": "image"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "sp_logo"
+        ]
+      }
+    },
+    "name": {
+      "literal": "img_homeLogo"
+    }
+  },
+  "widgets/mapMyLocation": {
+    "aimms.widget.type": {
+      "literal": "map-v2"
+    },
+    "arcs.__display_order__": {
+      "literal": [
+        "arcs.0"
+      ]
+    },
+    "center.latitude": {
+      "literal": 32.99023555965106
+    },
+    "center.longitude": {
+      "literal": -14.23828125
+    },
+    "heatmaps.__display_order__": {
+      "literal": [
+        "heatmaps.0"
+      ]
+    },
+    "name": {
+      "literal": "map_myLocation"
+    },
+    "nodes.__display_order__": {
+      "literal": [
+        "nodes.0"
+      ]
+    },
+    "nodes.0": {
+      "aimms": {
+        "contents": [
+          "p_shownLocationLongitude",
+          "p_shownLocationLatitude",
+          "p_shownLocationSize"
+        ],
+        "slices": [
+          {
+            "identifier": "p_shownLocationLongitude",
+            "slice": [
+              {
+                "index": "i_loc",
+                "type": "free",
+                "value": "i_loc"
+              }
+            ]
+          },
+          {
+            "identifier": "p_shownLocationLatitude",
+            "slice": [
+              {
+                "index": "i_loc",
+                "type": "free",
+                "value": "i_loc"
+              }
+            ]
+          },
+          {
+            "identifier": "p_shownLocationSize",
+            "slice": [
+              {
+                "index": "i_loc",
+                "type": "free",
+                "value": "i_loc"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "nodes.0.index": {
+      "literal": {
+        "identifier": "i_loc"
+      }
+    },
+    "nodes.0.latitude": {
+      "literal": {
+        "identifier": "p_shownLocationLatitude",
+        "slice": [
+          {
+            "index": "i_loc",
+            "type": "free",
+            "value": "i_loc"
+          }
+        ]
+      }
+    },
+    "nodes.0.longitude": {
+      "literal": {
+        "identifier": "p_shownLocationLongitude",
+        "slice": [
+          {
+            "index": "i_loc",
+            "type": "free",
+            "value": "i_loc"
+          }
+        ]
+      }
+    },
+    "nodes.0.maximumreferencesize": {
+      "aimms": {
+        "contents": [
+          "p_shownLocationRefSize"
+        ],
+        "slices": []
+      }
+    },
+    "nodes.0.size": {
+      "literal": {
+        "identifier": "p_shownLocationSize",
+        "slice": [
+          {
+            "index": "i_loc",
+            "type": "free",
+            "value": "i_loc"
+          }
+        ]
+      }
+    },
+    "title": {
+      "literal": "this ip is..."
+    },
+    "zoom": {
+      "literal": 2
+    }
+  },
+  "widgets/scalarIpAddress": {
+    "aimms.widget.type": {
+      "literal": "scalar"
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "sp_myIPAddress",
+          "sp_city",
+          "sp_country",
+          "sp_countryCode",
+          "p_lat",
+          "p_lon",
+          "sp_state",
+          "sp_timezone",
+          "sp_zip"
+        ]
+      }
+    },
+    "contents.numdecimals": {
+      "literal": 6
+    },
+    "name": {
+      "literal": "scl_ipAddress"
+    },
+    "title": {
+      "literal": "ip information"
+    }
+  },
+  "widgets/scalarObtainAPIkey": {
+    "aimms.widget.type": {
+      "literal": "scalar"
+    },
+    "compact": {
+      "literal": 1
+    },
+    "contents": {
+      "aimms": {
+        "contents": [
+          "sp_ipTwist_apiKey"
+        ]
+      }
+    },
+    "name": {
+      "literal": "scl_obtainAPIkey"
+    },
+    "title": {
+      "literal": "ipTwist api key"
+    }
+  },
+  "widgets/txt_apiKeyHelp": {
+    "aimms.widget.type": {
+      "literal": "text"
+    },
+    "contents": {
+      "literal": "<div><br></div>"
+    },
+    "name": {
+      "literal": "txt_apiKeyHelp"
+    }
+  },
+  "widgets/txt_welcome": {
+    "aimms.widget.type": {
+      "literal": "text"
+    },
+    "contents": {
+      "literal": "<div><span style=\"background-color: inherit; font-size: 32px;\"><b>Welcome!</b></span></div><div><br></div><div><span style=\"background-color: inherit; font-size: 18px;\">You are in an AIMMS Example. Feel free to play around and create something more in this app!</span></div><div><span style=\"background-color: inherit; font-size: 18px;\">&nbsp;</span></div><div><span style=\"background-color: inherit; font-size: 18px;\">If you do, please fork this repository and commit your changes.&nbsp;</span><b><span style=\"background-color: inherit; font-size: 18px;\">This ensures our GitHub stays up-to-date for the entire community!</span></b></div><div><br></div><div><span style=\"background-color: inherit; font-size: 18px;\">You can also check our other interactive resources:</span></div><div><br></div><ul><li><span style=\"background-color: inherit; font-size: 18px;\">In the Online&nbsp;</span><a href=\"https://community.aimms.com/\" style=\"font-size: 18px;\" target=\"_blank\"><span style=\"color: var(--primaryDark); background-color: inherit;\">Community</span></a><span style=\"background-color: inherit; font-size: 18px;\">, talk to other developers and AIMMSians about the product, modeling, use cases, and more.</span></li><li><span style=\"background-color: inherit; font-size: 18px;\">In the&nbsp;</span><a href=\"https://academy.aimms.com/\" style=\"font-size: 18px;\" target=\"_blank\"><span style=\"color: var(--primaryDark); background-color: inherit;\">Academy</span></a><span style=\"background-color: inherit; font-size: 18px;\">, learn new skills and challenge yourself. We are busy creating new courses, so keep an eye out!</span></li></ul><div><br></div><div><span style=\"background-color: inherit; font-size: 18px;\">For questions that can't be posted on the community, contact us at&nbsp;</span><i style=\"background-color: rgb(255, 255, 204); font-size: 18px;\">support@aimms.com</i><span style=\"background-color: inherit; font-size: 18px;\">.</span></div><div><br></div><div><br></div>"
+    },
+    "name": {
+      "literal": "txt_welcome"
+    }
+  }
+}

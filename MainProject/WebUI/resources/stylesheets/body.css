@@ -1,0 +1,10 @@
+/*Add logo on the background*/
+.scroll-wrapper--pagev2 .page-container {
+    content: " ";
+    background: url(img/RightBackground.png) rgb(249, 249, 249) no-repeat left/contain;
+}
+
+/*Changing button font*/
+.ui-widget, .ui-widget button, .ui-widget input, .ui-widget select, .ui-widget textarea {
+    font-family: var(--font_headers),Montserrat,Roboto,Arial,Helvetica,sans-serif; 
+}

@@ -264,9 +264,10 @@ Model Main_iptwist {
 		Procedure MainInitialization {
 			Body: {
 				ProfilerStart();
-				if fileExists( "../ipTwist_apiKey.txt" ) then
+				if FileExists( "../ipTwist_apiKey.txt" ) then
 					Read from file "../ipTwist_apiKey.txt" ;
 				endif ;
+				
 				ipTwist::api::APIKey(ipTwist::api::secscheme):= sp_ipTwist_apiKey ;
 				ipTwist::api::APIServer := "https://iptwist.com" ;
 				ipTwist::api::RequestResponseFilePrefix := "./RequestResponseFileFolder/";

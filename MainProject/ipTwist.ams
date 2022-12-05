@@ -81,7 +81,7 @@ Model Main_iptwist {
 					Index: i_loc;
 					Definition: data{ipLocation};
 				}
-				ElementParameter ep_location {
+				ElementParameter ep_def_location {
 					Range: s_locations;
 					Definition: first(s_locations);
 				}
@@ -123,29 +123,19 @@ Model Main_iptwist {
 					Body: {
 						s_loc_actions := {'CANCEL', 'OK'};
 						
-						if not sp_myIPAddress then
-						    sp_myIPAddress := "<add your api key here>";
-						endif;
-						
 						if sp_myIPAddress then
-							if sp_ipTwist_apiKey then
-								pr_GeolocateMakeRequest();
-							else
-								webui::OpenDialogPage(
-									pageId  :  'dialogensureapi', 
-									title   :  "Adding api key", 
-									actions :  s_loc_actions, 
-									onDone  :  'pr_onDoneObtainGeolocationInformation');
-							endif ;
-						else
-						    s_loc_actions := {'OK'};
+							if ipTwist::api::APIKey('X-IPTWIST-TOKEN') = "" then
+							    ipTwist::api::APIKey('X-IPTWIST-TOKEN') := "<add your api key here>";
+						    endif;
 						
-							webui::RequestPerformWebUIDialog(
-						        title   :  "Something went wrong!", 
-						        message :  "Please specify the IP address you want to be GeoLocated.", 
-						        actions :  s_loc_actions, 
-						        onDone  :  '');
-						endif;
+							webui::OpenDialogPage(
+								pageId  :  'dialogensureapi', 
+								title   :  "Adding api key", 
+								actions :  s_loc_actions, 
+								onDone  :  'pr_onDoneObtainGeolocationInformation');
+						else
+							raise warning "Please specify the IP address you want to be GeoLocated" ;
+						endif ;
 					}
 					Set s_loc_actions;
 				}
@@ -153,7 +143,6 @@ Model Main_iptwist {
 					Arguments: (sp_button);
 					Body: {
 						if sp_button = "OK" then
-							ipTwist::api::APIKey(ipTwist::api::secscheme):= sp_ipTwist_apiKey ;
 							pr_GeolocateMakeRequest();
 						endif ;
 					}
@@ -170,9 +159,6 @@ Model Main_iptwist {
 		}
 	}
 	Section Leveraging_DEX {
-		StringParameter sp_ipTwist_apiKey {
-			InitialData: "";
-		}
 		Function fnc_errorFunc {
 			Arguments: (ep_statusCode);
 			Range: string;
@@ -194,23 +180,19 @@ Model Main_iptwist {
 		Procedure pr_GeolocateMakeRequest {
 			Body: {
 				! Starting current call.
-				ipTwist::api::NewCallInstance(ep_openapi_ipTwist_CallInstance);
+				ipTwist::api::NewCallInstance(ep_callInstance);
 				
 				! Fill in the data for making the request.
-				ipTwist::_Request::ip(ep_openapi_ipTwist_CallInstance) := sp_myIPAddress ;
-				
-				! Workaround.
-				! Clear RequestFile to ensure it will reference a correctly generated input file.
-				ipTwist::api::post_::RequestFile(ipTwist::api::post_::reqpart) := "" ;
+				ipTwist::_Request::ip(ep_callInstance) := sp_myIPAddress ;
 				
 				! Install hook, which will copy the data or handle the error
-				ipTwist::api::post_::UserResponseHook :=
+				ipTwist::api::post_::UserResponseHook := 
 					'pr_GeolocateResponseHook' ;
 				
 				! Start the request.
-				ipTwist::api::post_::apiCall(ep_openapi_ipTwist_CallInstance);
+				ipTwist::api::post_::apiCall(ep_callInstance);
 			}
-			ElementParameter ep_openapi_ipTwist_CallInstance {
+			ElementParameter ep_callInstance {
 				Range: ipTwist::Instances;
 			}
 		}
@@ -220,34 +202,34 @@ Model Main_iptwist {
 				switch ipTwist::api::CallStatusCode(ep_callInstance) do
 				
 					'200':
-						! Success, add user to core data structures.
+						! Success, copy data retrieved to application core data structures.
 						block ! Copy to data structures of scalar widget.
-						sp_city         := ipTwist::_Response::city(        ep_callInstance);
-						sp_country      := ipTwist::_Response::country(     ep_callInstance);
-						sp_countryCode  := ipTwist::_Response::country_code(ep_callInstance);
-						p_lat           := ipTwist::_Response::latitude(    ep_callInstance);
-						p_lon           := ipTwist::_Response::longitude(   ep_callInstance);
-						sp_state        := ipTwist::_Response::state(       ep_callInstance);
-						sp_timezone     := ipTwist::_Response::timezone_(   ep_callInstance);
-						sp_zip          := ipTwist::_Response::zip(         ep_callInstance);
+							sp_city         := ipTwist::_Response::city(        ep_callInstance);
+							sp_country      := ipTwist::_Response::country(     ep_callInstance);
+							sp_countryCode  := ipTwist::_Response::country_code(ep_callInstance);
+							p_lat           := ipTwist::_Response::latitude(    ep_callInstance);
+							p_lon           := ipTwist::_Response::longitude(   ep_callInstance);
+							sp_state        := ipTwist::_Response::state(       ep_callInstance);
+							sp_timezone     := ipTwist::_Response::timezone_(   ep_callInstance);
+							sp_zip          := ipTwist::_Response::zip(         ep_callInstance);
 						endblock ;
-						block ! Copy to data structures of map widget.
-							p_shownLocationLatitude(  ep_location ) := p_lat ;
-							p_shownLocationLongitude( ep_location ) := p_lon ;
+						ipTwist::_Response::EmptyInstance(ep_callInstance);
+						block ! Use data in core data structures for presentation purposes.
+							p_shownLocationLatitude(  ep_def_location ) := p_lat ;
+							p_shownLocationLongitude( ep_def_location ) := p_lon ;
 						endblock ;
-				
 				
 					'400','401','402','403','404','405','406','407','408','409','410','411','412','413','414','415','416','417','421','422','423','424','425','426','427','428','429','431','451',
 					'500','501','502','503','504','505','506','507','508','510','511':
-						raise error formatString("ipTwist::Geolocate(%s) failed (status: %e, error: %e): %s",
-							sp_myIPAddress,
+						raise error formatString("ipTwist::Geolocate(%s) failed (instance: \'%e\', status: %e, error: %e): %s",
+							sp_myIPAddress, ep_callInstance, 
 							openapi_ipTwist::api::CallStatusCode(ep_callInstance), 
 							openapi_ipTwist::api::CallErrorCode(ep_callInstance), 
 							fnc_errorFunc( ipTwist::api::CallStatusCode(ep_callInstance) ) );
 				
 					default:
-						raise error formatString("ipTwist::Geolocate(%s) failed (status: %e, error: %e): %s",
-							sp_myIPAddress,
+						raise error formatString("ipTwist::Geolocate(%s) failed (instance: \'%e\', status: %e, error: %e): %s",
+							sp_myIPAddress, ep_callInstance,
 							openapi_ipTwist::api::CallStatusCode(ep_callInstance), 
 							openapi_ipTwist::api::CallErrorCode(ep_callInstance), 
 							"unknown reason" );
@@ -263,25 +245,12 @@ Model Main_iptwist {
 	Section Application_initialization_and_termination {
 		Procedure MainInitialization {
 			Body: {
-				ProfilerStart();
-				if FileExists( "../ipTwist_apiKey.txt" ) then
-					Read from file "../ipTwist_apiKey.txt" ;
-				endif ;
-				
-				ipTwist::api::APIKey(ipTwist::api::secscheme):= sp_ipTwist_apiKey ;
-				ipTwist::api::APIServer := "https://iptwist.com" ;
-				ipTwist::api::RequestResponseFilePrefix := "./RequestResponseFileFolder/";
-				
-				ipTwist::pr_readMappings();
+				!ProfilerStart();
 			}
 			Comment: "Add initialization statements here that do NOT require any library being initialized already.";
 		}
 		Procedure PostMainInitialization {
 			Body: {
-				! sp_myIPAddress := "143.178.92.106" ; ! Chris
-				! sp_myIPAddress := "200.171.138.212" ; ! Gabi
-				! sp_myIPAddress := "111.222.111.222" ; ! South East China
-				! sp_myIPAddress := "123.123.123.123" ; ! Beijing
 				sp_myIPAddress := "111.111.111.111" ; ! Tokyo, Japan.
 				
 				CurrentInputs -= Outputs;

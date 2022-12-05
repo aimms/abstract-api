@@ -3,19 +3,11 @@
 LibraryModule openapi_ipTwist {
 	Prefix: ipTwist;
 	Interface: Public_section;
+	Property: NoSave;
 	Section Public_section {
-		Procedure pr_readMappings {
-			Body: {
-				DirectoryOfLibraryProject("openapi_ipTwist", sp_libFolder);
-				dex::ReadMappings(
-					startPath :  sp_libFolder, 
-					subFolder :  "Generated/openapi-ipTwist", 
-					recursive :  0);
-			}
-			StringParameter sp_libFolder;
-		}
 		Section Schema_Data {
 			Set Instances {
+				SubsetOf: dex::Instances;
 				Index: i_instance, i_childInstance;
 				Parameter: CurrentInstance, NewInstance, CallInstance;
 			}
@@ -175,9 +167,9 @@ LibraryModule openapi_ipTwist {
 				Comment: "Counter used to create a new call instance";
 			}
 			StringParameter RequestResponseFilePrefix {
-				Default: "";
+				Default: "##";
 				Comment: {
-					"Prefix for all request and response files to, e.g., specify a subdirectoy, or 
+					"Prefix for all request and response files to, e.g., specify a subdirectory, or 
 					indicate the use of memory streams, see https://documentation.aimms.com/dataexchange/api.html#memory-streams"
 				}
 			}
@@ -204,7 +196,7 @@ LibraryModule openapi_ipTwist {
 				Comment: "Prototype that any request or response user hook procedure must adhere to";
 				DeclarationSection Locals {
 					ElementParameter callInstance {
-						Range: Instances;
+						Range: dex::Instances;
 						Property: Input;
 					}
 				}
@@ -225,31 +217,31 @@ LibraryModule openapi_ipTwist {
 						if (Card(QueryParamValue)) then dex::client::QueryMapEncode(QueryParamValue,qparval); url := FormatString("%s%s?%s", APIServer, url, qparval);
 						                           else url := FormatString("%s%s", APIServer, url); endif;
 						
-						if (not RequestFile('requestbody')) then
+						if (not RequestFile(callInstance, 'requestbody')) then
 							! If not provided explicitly, write the request file using the Request schema
-							RequestFile('requestbody') := FormatString("%srequest-%s.json", ipTwist::api::RequestResponseFilePrefix, callInstance);
+							RequestFile(callInstance, 'requestbody') := FormatString("%srequest-%s.json", ipTwist::api::RequestResponseFilePrefix, callInstance);
 							requestFileMapping('requestbody') := "Generated/openapi-ipTwist/Request";
-							dex::WriteToFile(RequestFile('requestbody'), requestFileMapping('requestbody'), 0);
+							dex::WriteToFile(RequestFile(callInstance, 'requestbody'), requestFileMapping('requestbody'), 0);
 						endif;
 						
 						! Create a callInstance-specific respone and tracing file if necessary and create the CURL request
-						ResponseFile(callInstance,'responsebody') := FormatString("%sresponse-%s", ipTwist::api::RequestResponseFilePrefix, callInstance);
+						ResponseFile(callInstance, 'responsebody') := FormatString("%sresponse-%s", ipTwist::api::RequestResponseFilePrefix, callInstance);
 						if (ipTwist::api::RequestTracing) then TracingFile(callInstance) := FormatString("%stracing-%s", ipTwist::api::RequestResponseFilePrefix, callInstance); endif;
 						
-						dex::client::NewRequest(callInstance, url, 'ipTwist::api::post_::callback', 'post', RequestFile('requestbody'), ResponseFile(callInstance,'responsebody'), TracingFile(callInstance));
+						dex::client::NewRequest(callInstance, url, 'ipTwist::api::post_::callback', 'post', RequestFile(callInstance, 'requestbody'), ResponseFile(callInstance, 'responsebody'), TracingFile(callInstance));
 						
 						! Add an API key header or an OAuth2 bearer token to authorize the API call
-						RequestHeaderValue('X-IPTWIST-TOKEN') := ApiKey('X-IPTWIST-TOKEN');
+						RequestHeaderValue(callInstance, 'X-IPTWIST-TOKEN') := ApiKey('X-IPTWIST-TOKEN');
 						if (OAuth2APIClient) then dex::oauth::AddBearerToken(OAuth2APIClient, callInstance); endif;
 						
 						! If a user request hook is defined for the method, call it prior to finishing and performing the request
 						if (NonDefault(ipTwist::api::post_::UserRequestHook)) then apply(ipTwist::api::post_::UserRequestHook, callInstance); endif;
 						
 						! Add any method headers present
-						dex::client::AddRequestHeaders(callInstance, RequestHeaderValue);
+						dex::client::AddRequestHeaders(callInstance, RequestHeaderValue(callInstance, .));
 						
 						! Add any cookies present
-						for (cookie | CookieValue(cookie)) do cookieString $+= ", "; cookieString += CookieValue(cookie); endfor;
+						for (cookie | CookieValue(callInstance, cookie)) do cookieString $+= ", "; cookieString += CookieValue(callInstance, cookie); endfor;
 						if (cookieString) then dex::client::AddStringOption(callInstance, dex::client::CurlOptionId('COOKIE'), cookieString); endif;
 						
 						! Add the global CURL options specified for this API
@@ -318,7 +310,7 @@ LibraryModule openapi_ipTwist {
 								if (DeserializeResponse('200')) then
 									! Conditionally read the response file using the Response schema
 									responseFileMapping('responsebody') := "Generated/openapi-ipTwist/Response";
-									dex::ReadFromFile(ResponseFile(callInstance,'responsebody'), responseFileMapping('responsebody'), 0, 0, 0);
+									dex::ReadFromFile(ResponseFile(callInstance, 'responsebody'), responseFileMapping('responsebody'), 0, 0, 0);
 								endif;
 						
 							'401':
@@ -359,7 +351,7 @@ LibraryModule openapi_ipTwist {
 					Comment: "Set of all request headers used by this method";
 				}
 				StringParameter RequestHeaderValue {
-					IndexDomain: reqheader;
+					IndexDomain: (i_instance, reqheader);
 					Default: "";
 					Comment: "Parameter holding the values of all request headers used by this method";
 				}
@@ -369,7 +361,7 @@ LibraryModule openapi_ipTwist {
 					Comment: "Set of all response headers used by this method";
 				}
 				StringParameter ResponseHeaderValue {
-					IndexDomain: (i_instance,respheader);
+					IndexDomain: (i_instance, respheader);
 					Default: "";
 					Comment: "Parameter holding the values of all response headers used by this method";
 				}
@@ -379,16 +371,26 @@ LibraryModule openapi_ipTwist {
 					Comment: "Set of all cookies used by this method";
 				}
 				StringParameter CookieValue {
-					IndexDomain: cookie;
+					IndexDomain: (i_instance, cookie);
 					Default: "";
 					Comment: "Parameter holding the values of all cookies used by this method";
 				}
 				Set RequestParts {
 					Index: reqpart;
-					InitialData: data { requestbody };
+					InitialData: data { 'requestbody' };
+				}
+				Set MimeHeaders {
+					SubsetOf: ipTwist::api::RequestHeaders;
+					Index: mimeheader;
+					Comment: "Set of all mime headers used by this method";
+				}
+				StringParameter MimeHeaderValue {
+					IndexDomain: (i_instance, reqpart, mimeheader);
+					Default: "";
+					Comment: "Set of all mime headers used by this method";
 				}
 				StringParameter RequestFile {
-					IndexDomain: reqpart;
+					IndexDomain: (i_instance, reqpart);
 					Default: "";
 					Comment: {
 						"Parameter holding the names of the file(s) to be used in the API call.
@@ -397,7 +399,7 @@ LibraryModule openapi_ipTwist {
 				}
 				Set ResponseParts {
 					Index: resppart;
-					InitialData: data { responsebody };
+					InitialData: data { 'responsebody' };
 				}
 				StringParameter ResponseFile {
 					IndexDomain: (i_instance, resppart);
@@ -429,35 +431,28 @@ LibraryModule openapi_ipTwist {
 	}
 	Section Private_section {
 		Section Library_initialization_and_termination {
-			Function LibraryDirectory {
-				Arguments: (sp_libraryName);
-				Range: string;
-				Body: {
-					if DirectoryOfLibraryProject(sp_libraryName, LibraryDirectory) <> 1 then
-						LibraryDirectory := sp_libraryName;
-					endif;
-				}
-				StringParameter sp_libraryName {
-					Property: Input;
-				}
-			}
-			StringParameter sp_openapi_ipTwist_LibraryPath {
-				Definition: {
-					LibraryDirectory("openapi ipTwist");
-				}
-			}
 			Procedure LibraryInitialization {
 				Body: {
-					!display "LibraryInitialization" ;
+					! Read mapping files for this library.
+					DirectoryOfLibraryProject("openapi_ipTwist", sp_libFolder);
+					dex::ReadMappings(sp_libFolder, "Generated/openapi-ipTwist",0);
+					
+					! Read api key:
+					sp_keyFilename := "../keys/openapi-apikey-ipTwist.txt";
+					if FileExists( sp_keyFilename ) then
+						read from file sp_keyFilename ;
+					endif ;
+					
+					! Set server to the one and only:
+					ipTwist::api::APIServer := "https://iptwist.com";
 				}
 				Comment: "Add initialization statements here that do not require any other library being initialized already.";
+				DeclarationSection DeclarationsLibraryInitialization {
+					StringParameter sp_libFolder;
+					StringParameter sp_keyFilename;
+				}
 			}
 			Procedure PostLibraryInitialization {
-				Body: {
-					!display "PostLibraryInitialization";
-					!display dex::Mappings ;
-					!
-				}
 				Comment: {
 					"Add initialization statements here that require another library to be initialized already,
 					or add statements that require the Data Management module to be initialized."
@@ -465,7 +460,7 @@ LibraryModule openapi_ipTwist {
 			}
 			Procedure PreLibraryTermination {
 				Body: {
-					return 1 ;
+					return 1;
 				}
 				Comment: {
 					"Add termination statements here that require all other libraries to be still alive.
@@ -475,7 +470,7 @@ LibraryModule openapi_ipTwist {
 			}
 			Procedure LibraryTermination {
 				Body: {
-					return 1 ;
+					return 1;
 				}
 				Comment: {
 					"Add termination statements here that do not require other libraries to be still alive.
@@ -483,13 +478,6 @@ LibraryModule openapi_ipTwist {
 					Return 0 if you want to cancel the termination sequence.
 					It is recommended to only use the procedure PreLibraryTermination to cancel the termination sequence and let this procedure always return 1."
 				}
-			}
-			Procedure pr_temp {
-				Body: {
-					DirectoryOfLibraryProject("openapi_ipTwist", sp_libFolder);
-					display sp_libFolder ;
-				}
-				StringParameter sp_libFolder;
 			}
 		}
 	}

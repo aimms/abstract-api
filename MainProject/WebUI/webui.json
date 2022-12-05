@@ -153,12 +153,12 @@
         {
           "widgetUri": "txt_apiKeyHelp",
           "gridArea": "area-a",
-          "dndId": "area-atxt_apiKeyHelp1"
+          "dndId": "area-atxt_apiKeyHelp0"
         },
         {
           "widgetUri": "scalarObtainAPIkey",
           "gridArea": "area-a",
-          "dndId": "area-ascalarObtainAPIkey0"
+          "dndId": "area-ascalarObtainAPIkey1"
         }
       ]
     },
@@ -475,13 +475,20 @@
     "aimms.widget.type": {
       "literal": "scalar"
     },
-    "compact": {
-      "literal": 1
-    },
     "contents": {
       "aimms": {
         "contents": [
-          "sp_ipTwist_apiKey"
+          "ipTwist::api::APIKey"
+        ]
+      }
+    },
+    "contents.partition": {
+      "literal": {
+        "keys": [
+          "ipTwist::api::secscheme"
+        ],
+        "aggregated": [
+          "<IDENTIFIER-SET>"
         ]
       }
     },

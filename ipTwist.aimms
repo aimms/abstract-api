@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<References AIMMS_Version="4.89.59869.1 (x64)">
+<References AIMMS_Version="4.89.2.5 (x64)">
 	<MainProject Path="MainProject" />
 	<Library System="true" Path="AimmsPro" />
 	<Library System="true" Path="AimmsWebUI" />
-	<RepositoryLibrary UUID="BDF54E1C-AF05-4D77-856C-F3C05F20FFB8" Name="AimmsDEX" Version="2.0.0.21" />
-	<Library Path="libs/openapi_ipTwist" />
+	<RepositoryLibrary UUID="BDF54E1C-AF05-4D77-856C-F3C05F20FFB8" Name="AimmsDEX" Version="2.0.1.4" />
+	<Library Path="libs\openapi-ipTwist" />
 </References>

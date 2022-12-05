@@ -166,10 +166,10 @@
       "literal": "Layout11"
     },
     "maxcolumns": {
-      "literal": 3
+      "literal": 2
     },
     "maxrows": {
-      "literal": 2
+      "literal": 1
     },
     "widgets": {
       "literal": [
@@ -298,8 +298,28 @@
     "aimms.widget.type": {
       "literal": "pagev2-grid"
     },
+    "bindings": {
+      "literal": [
+        {
+          "widgetUri": "txt_story",
+          "gridArea": "area-a",
+          "dndId": "Unassigned widgetstxt_story"
+        }
+      ]
+    },
     "layoutId": {
-      "literal": "Layout1"
+      "literal": "Layout11"
+    },
+    "widgets": {
+      "literal": [
+        {
+          "uri": "txt_story",
+          "layoutInfo": {
+            "width": "2",
+            "height": "1"
+          }
+        }
+      ]
     }
   },
   "widgets/img_homeLogo": {
@@ -327,10 +347,10 @@
       ]
     },
     "center.latitude": {
-      "literal": 32.99023555965106
+      "literal": 27.839076094777817
     },
     "center.longitude": {
-      "literal": -14.23828125
+      "literal": 134.82421875000004
     },
     "heatmaps.__display_order__": {
       "literal": [
@@ -482,6 +502,9 @@
         ]
       }
     },
+    "contents.labels.visible": {
+      "literal": 0
+    },
     "contents.partition": {
       "literal": {
         "keys": [
@@ -504,10 +527,21 @@
       "literal": "text"
     },
     "contents": {
-      "literal": "<div><br></div>"
+      "literal": "<div><span style=\"color: rgb(64, 64, 64); background-color: rgb(252, 252, 252); font-family: futura-pt, sans-serif; font-size: 18px;\">To operate this example, you first need to obtain an API key, from </span><a href=\"https://iptwist.com/settings\" target=\"_blank\"><span style=\"background-color: rgb(252, 252, 252); font-family: futura-pt, sans-serif; font-size: 18px;\">ipTwist</span></a><span style=\"background-color: rgb(252, 252, 252); font-family: futura-pt, sans-serif; font-size: 18px;\">.</span></div><div><br></div><div><span style=\"font-size: 18px;\">After signing up, copy and paste the key below.&nbsp;</span></div>"
     },
     "name": {
       "literal": "txt_apiKeyHelp"
+    }
+  },
+  "widgets/txt_story": {
+    "aimms.widget.type": {
+      "literal": "text"
+    },
+    "contents": {
+      "literal": "<div><span style=\"font-size: 32px;\"><b>Story</b></span></div><div><br></div><div><span style=\"font-size: 18px;\">In this functional example, you will see a IP Locator. The site </span><a href=\"https://iptwist.com\" style=\"font-size: 18px;\" target=\"_blank\">ipTwist</a><span style=\"font-size: 18px;\">&nbsp;provides a service for WhoIs GeoLocating; translating an IP Address to a location on the globe.</span></div><div><br></div><div><span style=\"font-size: 18px;\">For instance, the IP Address </span><b style=\"font-size: 18px;\">111.111.111.111</b><b style=\"color: rgb(206, 145, 120); font-size: 18px;\">&nbsp;</b><span style=\"font-size: 18px;\">will return Latitude </span><b style=\"font-size: 18px;\">35.68</b><span style=\"font-size: 18px;\">, Longitude </span><b style=\"font-size: 18px;\">136.69</b><span style=\"font-size: 18px;\">; which is in Tokyo, Japan. Add your IP address and confirm where you are!</span></div><div><br></div>"
+    },
+    "name": {
+      "literal": "txt_story"
     }
   },
   "widgets/txt_welcome": {

@@ -4,7 +4,7 @@
 
 **Mirrored in:** https://github.com/aimms/ip-twist
 
-**How-to:** 
+**How-to:** https://how-to.aimms.com/Articles/563/563-functional-ipTwist.html
 
 ## Story
 

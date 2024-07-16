@@ -1,0 +1,607 @@
+## ams_version=1.0
+
+LibraryModule openapi_geoAbstract {
+	Prefix: geoAbstract;
+	Interface: Public_Section;
+	Property: NoSave;
+	Section Public_Section {
+		Procedure InitializeAPIClient {
+			Body: {
+				! Read mapping files for this library.
+				block
+					DirectoryOfLibraryProject("openapi_geoAbstract", libFolder);
+				onerror err do
+					libFolder := "../libs/openapi-geoAbstract/";
+					errh::MarkAsHandled(err);
+				endblock;
+				dex::ReadMappings(libFolder, "openapi-geoAbstract", 1);
+				
+				! Read server initialization data (e.g. service URL, api key, OAuth credentials)
+				apiInitFile := "../api-init/openapi-geoAbstract.txt";
+				if FileExists(apiInitFile) then
+					read from file apiInitFile;
+				endif ;
+			}
+			DeclarationSection Locals {
+				StringParameter libFolder;
+				StringParameter apiInitFile;
+				ElementParameter err {
+					Range: errh::PendingErrors;
+				}
+			}
+		}
+		Section Schema_Data {
+			Set Instances {
+				SubsetOf: dex::Instances;
+				Index: i_instance, i_childInstance;
+				Parameter: CurrentInstance, NewInstance, CallInstance;
+			}
+			Set Iterators {
+				SubsetOf: Integers;
+				Index: iter;
+				Comment: "Add initialization statements here that do not require any other library being initialized already.";
+			}
+			Module inline_response_200_ {
+				Prefix: _inline_response_200;
+				StringParameter city {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				Parameter city_geoname_id {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				StringParameter continent {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				StringParameter continent_code {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				Parameter continent_geoname_id {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				StringParameter country {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				StringParameter country_code {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				Parameter country_geoname_id {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				Parameter country_is_eu {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				StringParameter ip_address {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				Parameter latitude {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				Parameter longitude {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				StringParameter postal_code {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				StringParameter region_ {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				Parameter region_geoname_id {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: 0;
+				}
+				StringParameter region_iso_code {
+					IndexDomain: (geoAbstract::i_instance);
+					Default: "";
+				}
+				Module connection_ {
+					Prefix: _connection;
+					Parameter autonomous_system_number {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: 0;
+					}
+					StringParameter autonomous_system_organization {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter connection_type {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter isp_name {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter organization_name {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+				}
+				Module currency_ {
+					Prefix: _currency;
+					StringParameter currency_code {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter currency_name {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+				}
+				Module flag_ {
+					Prefix: _flag;
+					StringParameter emoji {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter png {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter svg {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter unicode_ {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+				}
+				Module security_ {
+					Prefix: _security;
+					Parameter is_vpn {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: 0;
+					}
+				}
+				Module timezone_ {
+					Prefix: _timezone;
+					StringParameter abbreviation {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					StringParameter current_time {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+					Parameter gmt_offset {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: 0;
+					}
+					Parameter is_dst {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: 0;
+					}
+					StringParameter name_ {
+						IndexDomain: (geoAbstract::i_instance);
+						Default: "";
+					}
+				}
+				Procedure EmptyInstance {
+					Arguments: (instance_);
+					Body: {
+						InstancesToEmpty += instance_;
+						
+						empty city(i_empty_inst), city_geoname_id(i_empty_inst), _connection::autonomous_system_number(i_empty_inst),
+						      _connection::autonomous_system_organization(i_empty_inst), _connection::connection_type(i_empty_inst),
+						      _connection::isp_name(i_empty_inst), _connection::organization_name(i_empty_inst), continent(i_empty_inst),
+						      continent_code(i_empty_inst), continent_geoname_id(i_empty_inst), country(i_empty_inst), country_code(i_empty_inst),
+						      country_geoname_id(i_empty_inst), country_is_eu(i_empty_inst), _currency::currency_code(i_empty_inst),
+						      _currency::currency_name(i_empty_inst), _flag::emoji(i_empty_inst), _flag::png(i_empty_inst), _flag::svg(i_empty_inst),
+						      _flag::unicode_(i_empty_inst), ip_address(i_empty_inst), latitude(i_empty_inst), longitude(i_empty_inst),
+						      postal_code(i_empty_inst), region_(i_empty_inst), region_geoname_id(i_empty_inst), region_iso_code(i_empty_inst),
+						      _security::is_vpn(i_empty_inst), _timezone::abbreviation(i_empty_inst), _timezone::current_time(i_empty_inst),
+						      _timezone::gmt_offset(i_empty_inst), _timezone::is_dst(i_empty_inst), _timezone::name_(i_empty_inst);
+					}
+					Comment: "Empties all data for instance of current schema";
+					DeclarationSection Locals {
+						ElementParameter instance_ {
+							Range: Instances;
+							Property: Input;
+						}
+						Set InstancesToEmpty {
+							SubsetOf: Instances;
+							Index: i_empty_inst;
+						}
+					}
+				}
+			}
+		}
+		Module API_Client_Procedures {
+			Prefix: api;
+			Set RequestHeaders {
+				Index: reqhdr;
+				Comment: "Set containing the request headers used by any method in the OpenAPI specification";
+			}
+			Set ResponseHeaders {
+				Index: resphdr;
+				Comment: "Set containing the response headers used by any method in the OpenAPI specification";
+			}
+			Set Cookies {
+				Index: cookie;
+				Comment: "St containing the cookies used by any method in the OpenAPI specification";
+			}
+			StringParameter APIServer {
+				Default: "";
+				Comment: "Base url prefixed to the method paths of all API methods";
+			}
+			Set SecuritySchemes {
+				Index: secscheme;
+				Comment: "Set containing the names of security schemes specified in the OpenAPI specification";
+			}
+			StringParameter APIKey {
+				IndexDomain: (secscheme);
+				Default: "";
+				Comment: "Parameter holding the API key for any security scheme to be used by an API method";
+			}
+			ElementParameter OAuth2APIClient {
+				Range: dex::oauth::APIClients;
+				Default: '';
+				Comment: "Parameter holding the OAuth2 configuration to be used by an API method";
+			}
+			Parameter IntOptions {
+				IndexDomain: dex::client::intopt;
+				InitialData: data { FOLLOWLOCATION : 1, MAXREDIRS : 10, SSL_OPTIONS : 2, HTTP_VERSION : 3 };
+				Comment: "Set with all CURL integer options passed to all API calls";
+			}
+			StringParameter StringOptions {
+				IndexDomain: dex::client::stropt;
+				InitialData: data { ACCEPT_ENCODING : "gzip, deflate" };
+				Comment: "Set with all CURL string options passed to all API calls";
+			}
+			ElementParameter CallStatusCode {
+				IndexDomain: (i_instance);
+				Range: dex::HTTPStatusCodes;
+				Default: '';
+				Comment: "Parameter holding the status codes of all API calls made";
+			}
+			Parameter CallErrorCode {
+				IndexDomain: (i_instance);
+				Default: 0;
+				Property: Integer;
+				Comment: "Parameter holding the CURL error codes of all API calls made";
+			}
+			Parameter CallTime {
+				IndexDomain: (i_instance);
+				Default: 0;
+				Comment: "Parameter holding the roundtrip time of all API calls made";
+			}
+			Parameter MaxCallInstance {
+				Default: 0;
+				Property: Integer;
+				Comment: "Counter used to create a new call instance";
+			}
+			StringParameter RequestHeaderValue {
+				IndexDomain: (i_instance, reqhdr);
+				Default: "";
+				Comment: "Parameter holding the values of all request headers used by this method";
+			}
+			StringParameter ResponseHeaderValue {
+				IndexDomain: (i_instance, resphdr);
+				Default: "";
+				Comment: "Parameter holding the values of all response headers used by this method";
+			}
+			StringParameter CookieValue {
+				IndexDomain: (i_instance, cookie);
+				Default: "";
+				Comment: "Parameter holding the values of all cookies used by this method";
+			}
+			Set RequestParts {
+				Index: reqpart;
+				InitialData: data { 'requestbody' };
+			}
+			StringParameter MimeHeaderValue {
+				IndexDomain: (i_instance, reqpart, reqhdr);
+				Default: "";
+				Comment: "Set of all mime headers used by this method";
+			}
+			StringParameter RequestFile {
+				IndexDomain: (i_instance, reqpart);
+				Default: "";
+				Comment: {
+					"Parameter holding the names of the file(s) to be used in the API call.
+					If request file has been specified for the request body or a part of a multi-part body, you must specify them here."
+				}
+			}
+			Set ResponseParts {
+				Index: resppart;
+				InitialData: data { 'responsebody' };
+			}
+			StringParameter ResponseFile {
+				IndexDomain: (i_instance, resppart);
+				Default: "";
+				Comment: "Parameter holding the names of the file(s) returned by the API call.";
+			}
+			StringParameter TracingFile {
+				IndexDomain: (i_instance);
+				Default: "";
+				Comment: "Parameter holding the name of the tracing file for an api call (if any).";
+			}
+			StringParameter AdditionalQueryParameters {
+				IndexDomain: (i_instance);
+				Default: "";
+				Comment: "String parameter holding any additional query parameters to be added to the request (URL-encoded and separated by &, but without a preceding ?).";
+			}
+			StringParameter RequestResponseFilePrefix {
+				Default: "##";
+				Comment: {
+					"Prefix for all request and response files to, e.g., specify a subdirectory, or 
+					indicate the use of memory streams, see https://documentation.aimms.com/dataexchange/api.html#memory-streams"
+				}
+			}
+			Parameter RequestTracing {
+				Default: 0;
+				Comment: "Flag to indicate whether or not to create CURL trace files for all API calls";
+			}
+			Procedure NewCallInstance {
+				Arguments: (callInstance);
+				Body: {
+					MaxCallInstance += 1;
+					SetElementAdd(Instances, callInstance, FormatString("call-%i", MaxCallInstance));
+				}
+				Comment: "Procedure for creating a new call instance";
+				DeclarationSection Locals {
+					ElementParameter callInstance {
+						Range: Instances;
+						Property: Output;
+					}
+				}
+			}
+			Procedure UserRequestResponseHookPrototype {
+				Arguments: (callInstance);
+				Comment: "Prototype that any request or response user hook procedure must adhere to";
+				DeclarationSection Locals {
+					ElementParameter callInstance {
+						Range: dex::Instances;
+						Property: Input;
+					}
+				}
+			}
+			Module get_v1__ {
+				Prefix: get_v1_;
+				Procedure apiCall {
+					Arguments: (callInstance,api_key,ip_address,fields);
+					Body: {
+						! Set the relative method URL and set CurrentInstance needed by the schema mapping files
+						url := "/v1/";
+						Iterators += { 1 };
+						CurrentInstance := callInstance;
+						
+						! For all method arguments, apply the path substitutions or add the query parameters
+						QueryParamValue('api_key',1) := api_key;
+						QueryParamValue('ip_address',1) := ip_address $ NonDefault(ip_address);
+						QueryParamValue('fields',1) := fields $ NonDefault(fields);
+						
+						! Create the final method url. If (additional) query parameters are present, append them to the url
+						if (Card(QueryParamValue) or AdditionalQueryParameters(callInstance)) then
+							dex::client::QueryMapEncode(QueryParamValue,qparval);
+							if (AdditionalQueryParameters(callInstance)) then qparval $+= "&"; qparval += AdditionalQueryParameters(callInstance); endif;
+							url := FormatString("%s%s?%s", APIServer, url, qparval);
+						else
+							url := FormatString("%s%s", APIServer, url);
+						endif;
+						
+						! Create a callInstance-specific response and tracing file if necessary and create the CURL request
+						ResponseFile(callInstance, 'responsebody') := FormatString("%sresponse-%s", RequestResponseFilePrefix, callInstance);
+						if (RequestTracing) then TracingFile(callInstance) := FormatString("%stracing-%s", RequestResponseFilePrefix, callInstance); endif;
+						
+						dex::client::NewRequest(callInstance, url, 'geoAbstract::api::get_v1_::callback', 'get', RequestFile(callInstance, 'requestbody'), ResponseFile(callInstance, 'responsebody'), TracingFile(callInstance));
+						dex::client::AddRequestTag(callInstance, "geoAbstract");
+						dex::client::AddRequestTag(callInstance, "geoAbstract::api::get_v1_");
+						
+						! Add an API key header or an OAuth2 bearer token to authorize the API call
+						if (OAuth2APIClient) then dex::oauth::AddBearerToken(OAuth2APIClient, callInstance); endif;
+						
+						! If a user request hook is defined for the method, call it prior to finishing and performing the request
+						if (NonDefault(UserRequestHook)) then apply(UserRequestHook, callInstance); endif;
+						
+						! Add any method headers present
+						dex::client::AddRequestHeaders(callInstance, RequestHeaderValue(callInstance, .));
+						
+						! Add any cookies present
+						for (cookie | CookieValue(callInstance, cookie)) do cookieString $+= ", "; cookieString += CookieValue(callInstance, cookie); endfor;
+						if (cookieString) then dex::client::AddStringOption(callInstance, dex::client::CurlOptionId('COOKIE'), cookieString); endif;
+						
+						! Add the global CURL options specified for this API
+						dex::client::AddRequestOptions(callInstance, IntOptions, StringOptions);
+						
+						! Finally, perform the API call
+						dex::client::PerformRequest(callInstance);
+					}
+					Comment: {
+						"
+						
+						Retrieve the location of an IP address"
+					}
+					DeclarationSection Locals {
+						ElementParameter callInstance {
+							Range: Instances;
+							Property: Input;
+						}
+						StringParameter url {
+							Default: "";
+						}
+						StringParameter urlEncodedArg {
+							Default: "";
+						}
+						Set QueryParams {
+							Index: qpar;
+							InitialData: data { 'api_key', 'ip_address', 'fields' };
+						}
+						StringParameter QueryParamValue {
+							IndexDomain: (qpar,iter);
+							Default: "";
+						}
+						StringParameter qparval;
+						StringParameter requestFileMapping {
+							IndexDomain: (reqpart);
+							Default: "";
+						}
+						StringParameter cookieString {
+							Default: "";
+						}
+						StringParameter api_key {
+							Default: "";
+							Property: Input;
+						}
+						StringParameter ip_address {
+							Default: "";
+							Property: Optional;
+						}
+						StringParameter fields {
+							Default: "";
+							Property: Optional;
+						}
+					}
+				}
+				Procedure callback {
+					Arguments: (theRequest,statusCode,errorCode);
+					Body: {
+						! Re-create the callInstance element from theRequest and set CurrentInstance needed by the schema mapping files
+						callInstance := StringToElement(Instances, theRequest);
+						CurrentInstance := callInstance;
+						
+						! Determine and store the HTTP status code
+						status_ := StringToElement(dex::HTTPStatusCodes, statusCode);
+						CallStatusCode(callInstance) := status_;
+						CallErrorCode(callInstance) := errorCode;
+						
+						! Don't parse responses if there is a CURL error code, but do call the response hook
+						if (errorCode) then
+							if (NonDefault(UserResponseHook)) then apply(UserResponseHook, callInstance); endif;
+							return;
+						endif;
+						
+						! Get the roundtrip time for the API call
+						dex::client::GetIntInfoItem(callInstance, dex::client::CurlInfoId('TOTAL_TIME_T'), CallTime(callInstance));
+						CallTime(callInstance) /= 1000000;
+						
+						! Store all response headers returned in the response
+						dex::client::GetResponseHeaders(callInstance,ResponseHeaderValue(callInstance, respheader));
+						
+						! Based on the HTTP status, handle the response using the appropriate schema
+						switch (status_) do
+							'200':
+								if (DeserializeResponse('200')) then
+									! Conditionally read the response file using the inline_response_200 schema
+									responseFileMapping('responsebody') := "openapi-geoAbstract/json/inline_response_200";
+									CallErrorCode(callInstance) := dex::ProtectedReadFromFile(ResponseFile(callInstance, 'responsebody'), responseFileMapping('responsebody'));
+								endif;
+						
+						endswitch;
+						
+						! If a user response hook is defined for the method, call it here after retrieving and storing all response data
+						if (NonDefault(UserResponseHook)) then apply(UserResponseHook, callInstance); endif;
+					}
+					DeclarationSection Locals {
+						StringParameter theRequest {
+							Property: Input;
+						}
+						Parameter statusCode {
+							Property: Input;
+						}
+						Parameter errorCode {
+							Property: Input;
+						}
+						ElementParameter callInstance {
+							Range: Instances;
+							Default: '';
+						}
+						ElementParameter status_ {
+							Range: dex::HTTPStatusCodes;
+							Default: '';
+						}
+						StringParameter responseFileMapping {
+							IndexDomain: (resppart);
+							Default: "";
+						}
+					}
+				}
+				Set RequestHeaders {
+					SubsetOf: geoAbstract::api::RequestHeaders;
+					Index: reqheader;
+					Comment: "Set of all request headers used by this method";
+				}
+				Set ResponseHeaders {
+					SubsetOf: geoAbstract::api::ResponseHeaders;
+					Index: respheader;
+					Comment: "Set of all response headers used by this method";
+				}
+				Set Cookies {
+					SubsetOf: geoAbstract::api::Cookies;
+					Index: cookie;
+					Comment: "Set of all cookies used by this method";
+				}
+				Set MimeHeaders {
+					SubsetOf: geoAbstract::api::RequestHeaders;
+					Index: mimeheader;
+					Comment: "Set of all mime headers used by this method";
+				}
+				Parameter DeserializeResponse {
+					IndexDomain: (dex::statclass);
+					Default: 1;
+					Comment: "Method-specific flag to indicate for which status classes response files should be deserialized, or be left to the model";
+				}
+				ElementParameter UserRequestHook {
+					Range: AllProcedures;
+					Default: 'geoAbstract::api::UserRequestResponseHookPrototype';
+					Comment: "Request hook procedure that can be defined by the app developer and will be called prior to performing the API call";
+				}
+				ElementParameter UserResponseHook {
+					Range: AllProcedures;
+					Default: 'geoAbstract::api::UserRequestResponseHookPrototype';
+					Comment: "Response hook procedure that can be defined by the app developer and will be called in the method callback";
+				}
+			}
+		}
+	}
+	Section Private_Section {
+		Section Library_Initialization_and_Termination {
+			Procedure LibraryInitialization {
+				Body: {
+					InitializeAPIClient;
+				}
+			}
+			Procedure PostLibraryInitialization {
+				Comment: {
+					"Add initialization statements here that require another library to be initialized already,
+					or add statements that require the Data Management module to be initialized."
+				}
+			}
+			Procedure PreLibraryTermination {
+				Body: {
+					return 1;
+				}
+				Comment: {
+					"Add termination statements here that require all other libraries to be still alive.
+					Return 1 if you allow the termination sequence to continue.
+					Return 0 if you want to cancel the termination sequence."
+				}
+			}
+			Procedure LibraryTermination {
+				Body: {
+					return 1;
+				}
+				Comment: {
+					"Add termination statements here that do not require other libraries to be still alive.
+					Return 1 to allow the termination sequence to continue.
+					Return 0 if you want to cancel the termination sequence.
+					It is recommended to only use the procedure PreLibraryTermination to cancel the termination sequence and let this procedure always return 1."
+				}
+			}
+		}
+	}
+}

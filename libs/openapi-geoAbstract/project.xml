@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<LibraryProject AimmsVersion="24.5.4.2" ProjectUUID="0543ab3d-1521-4f48-a8b7-60ab2feab672">
+	<ModelFileName>openapi-geoAbstract.ams</ModelFileName>
+	<Prefix>geoAbstract</Prefix>
+	<DisplayName>openapi_geoAbstract</DisplayName>
+</LibraryProject>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<AimmsJSONMapping iterative-reset="geoAbstract::i_childInstance,dex::schema::childNode,dex::schema::extbinding">
+	<ExternalBinding binds-to="geoAbstract::i_instance" binding="geoAbstract::CurrentInstance" />
+	<ObjectMapping>
+		<ObjectMapping name="connection">
+			<ValueMapping name="autonomous_system_number" maps-to="geoAbstract::_inline_response_200::_connection::autonomous_system_number(geoAbstract::i_instance)" number-type="integer" />
+			<ValueMapping name="autonomous_system_organization" maps-to="geoAbstract::_inline_response_200::_connection::autonomous_system_organization(geoAbstract::i_instance)" />
+			<ValueMapping name="connection_type" maps-to="geoAbstract::_inline_response_200::_connection::connection_type(geoAbstract::i_instance)" />
+			<ValueMapping name="isp_name" maps-to="geoAbstract::_inline_response_200::_connection::isp_name(geoAbstract::i_instance)" />
+			<ValueMapping name="organization_name" maps-to="geoAbstract::_inline_response_200::_connection::organization_name(geoAbstract::i_instance)" />
+		</ObjectMapping>
+		<ObjectMapping name="currency">
+			<ValueMapping name="currency_code" maps-to="geoAbstract::_inline_response_200::_currency::currency_code(geoAbstract::i_instance)" />
+			<ValueMapping name="currency_name" maps-to="geoAbstract::_inline_response_200::_currency::currency_name(geoAbstract::i_instance)" />
+		</ObjectMapping>
+		<ObjectMapping name="flag">
+			<ValueMapping name="emoji" maps-to="geoAbstract::_inline_response_200::_flag::emoji(geoAbstract::i_instance)" />
+			<ValueMapping name="png" maps-to="geoAbstract::_inline_response_200::_flag::png(geoAbstract::i_instance)" />
+			<ValueMapping name="svg" maps-to="geoAbstract::_inline_response_200::_flag::svg(geoAbstract::i_instance)" />
+			<ValueMapping name="unicode" maps-to="geoAbstract::_inline_response_200::_flag::unicode_(geoAbstract::i_instance)" />
+		</ObjectMapping>
+		<ObjectMapping name="security">
+			<ValueMapping name="is_vpn" maps-to="geoAbstract::_inline_response_200::_security::is_vpn(geoAbstract::i_instance)" number-type="boolean" />
+		</ObjectMapping>
+		<ObjectMapping name="timezone">
+			<ValueMapping name="abbreviation" maps-to="geoAbstract::_inline_response_200::_timezone::abbreviation(geoAbstract::i_instance)" />
+			<ValueMapping name="current_time" maps-to="geoAbstract::_inline_response_200::_timezone::current_time(geoAbstract::i_instance)" />
+			<ValueMapping name="gmt_offset" maps-to="geoAbstract::_inline_response_200::_timezone::gmt_offset(geoAbstract::i_instance)" number-type="integer" />
+			<ValueMapping name="is_dst" maps-to="geoAbstract::_inline_response_200::_timezone::is_dst(geoAbstract::i_instance)" number-type="boolean" />
+			<ValueMapping name="name" maps-to="geoAbstract::_inline_response_200::_timezone::name_(geoAbstract::i_instance)" />
+		</ObjectMapping>
+		<ValueMapping name="city" maps-to="geoAbstract::_inline_response_200::city(geoAbstract::i_instance)" />
+		<ValueMapping name="city_geoname_id" maps-to="geoAbstract::_inline_response_200::city_geoname_id(geoAbstract::i_instance)" number-type="integer" />
+		<ValueMapping name="continent" maps-to="geoAbstract::_inline_response_200::continent(geoAbstract::i_instance)" />
+		<ValueMapping name="continent_code" maps-to="geoAbstract::_inline_response_200::continent_code(geoAbstract::i_instance)" />
+		<ValueMapping name="continent_geoname_id" maps-to="geoAbstract::_inline_response_200::continent_geoname_id(geoAbstract::i_instance)" number-type="integer" />
+		<ValueMapping name="country" maps-to="geoAbstract::_inline_response_200::country(geoAbstract::i_instance)" />
+		<ValueMapping name="country_code" maps-to="geoAbstract::_inline_response_200::country_code(geoAbstract::i_instance)" />
+		<ValueMapping name="country_geoname_id" maps-to="geoAbstract::_inline_response_200::country_geoname_id(geoAbstract::i_instance)" number-type="integer" />
+		<ValueMapping name="country_is_eu" maps-to="geoAbstract::_inline_response_200::country_is_eu(geoAbstract::i_instance)" number-type="boolean" />
+		<ValueMapping name="ip_address" maps-to="geoAbstract::_inline_response_200::ip_address(geoAbstract::i_instance)" />
+		<ValueMapping name="latitude" maps-to="geoAbstract::_inline_response_200::latitude(geoAbstract::i_instance)" />
+		<ValueMapping name="longitude" maps-to="geoAbstract::_inline_response_200::longitude(geoAbstract::i_instance)" />
+		<ValueMapping name="postal_code" maps-to="geoAbstract::_inline_response_200::postal_code(geoAbstract::i_instance)" />
+		<ValueMapping name="region" maps-to="geoAbstract::_inline_response_200::region_(geoAbstract::i_instance)" />
+		<ValueMapping name="region_geoname_id" maps-to="geoAbstract::_inline_response_200::region_geoname_id(geoAbstract::i_instance)" number-type="integer" />
+		<ValueMapping name="region_iso_code" maps-to="geoAbstract::_inline_response_200::region_iso_code(geoAbstract::i_instance)" />
+	</ObjectMapping>
+</AimmsJSONMapping>

@@ -14,3 +14,7 @@
 "Copy_p_shownLocationSize" "sp_locationTooltip" "2022-11-11 19:20:20"
 "Copy_sp_locationTooltip" "sp_locationAnnotation" "2022-11-11 19:27:06"
 "ep_location" "ep_def_location" "2022-12-05 15:04:51"
+"Copy_ipTwist_implementations" "abstractapi_implementations" "2024-07-16 09:47:19"
+"Copy_fnc_errorFunc" "fnc_abstractapi_errorFunc" "2024-07-16 09:47:37"
+"Copy_pr_GeolocateMakeRequest" "pr_abstractapi_GeolocateMakeRequest" "2024-07-16 09:47:45"
+"Copy_pr_GeolocateResponseHook" "pr_abstractapi_ResponseHook" "2024-07-16 09:47:57"

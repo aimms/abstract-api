@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<AimmsJSONMapping iterative-reset="ipTwist::i_childInstance,dex::schema::childNode,dex::schema::extbinding">
-	<ExternalBinding binds-to="ipTwist::i_instance" binding="ipTwist::CurrentInstance" />
-	<ObjectMapping>
-		<ValueMapping name="ip" maps-to="ipTwist::_Request::ip(ipTwist::i_instance)" />
-	</ObjectMapping>
-</AimmsJSONMapping>

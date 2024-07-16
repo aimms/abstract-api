@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ModelBookmarks TimeStamp="2024-07-16 09:47:59">
+	<Category Name="getting one">
+		<Bookmark Node="pr_obtainGeolocationInformation" Attribute="body" LineNumber="1">
+			<TextLine>s_loc_actions := {'CANCEL', 'OK'};</TextLine>
+		</Bookmark>
+	</Category>
+</ModelBookmarks>

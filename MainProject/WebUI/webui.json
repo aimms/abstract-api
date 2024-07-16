@@ -4,6 +4,27 @@
     "aimms.widget.type": {
       "literal": "application"
     },
+    "browser.language": {
+      "aimms": {
+        "contents": [
+          "webui::ClientBrowserLanguage"
+        ]
+      }
+    },
+    "browser.name": {
+      "aimms": {
+        "contents": [
+          "webui::ClientBrowserName"
+        ]
+      }
+    },
+    "browser.timezone": {
+      "aimms": {
+        "contents": [
+          "webui::BrowserTimeZone"
+        ]
+      }
+    },
     "browsername": {
       "aimms": {
         "contents": [
@@ -347,10 +368,10 @@
       ]
     },
     "center.latitude": {
-      "literal": 27.839076094777817
+      "literal": 27.839076094777816
     },
     "center.longitude": {
-      "literal": 134.82421875000004
+      "literal": 134.82421875000003
     },
     "heatmaps.__display_order__": {
       "literal": [
@@ -458,6 +479,9 @@
     "title": {
       "literal": "this ip is..."
     },
+    "views": {
+      "literal": {}
+    },
     "zoom": {
       "literal": 2
     }
@@ -489,6 +513,9 @@
     },
     "title": {
       "literal": "ip information"
+    },
+    "views": {
+      "literal": {}
     }
   },
   "widgets/scalarObtainAPIkey": {
@@ -498,7 +525,7 @@
     "contents": {
       "aimms": {
         "contents": [
-          "ipTwist::api::APIKey"
+          "sp_apiKey"
         ]
       }
     },
@@ -520,6 +547,9 @@
     },
     "title": {
       "literal": "ipTwist api key"
+    },
+    "views": {
+      "literal": {}
     }
   },
   "widgets/txt_apiKeyHelp": {
@@ -538,7 +568,7 @@
       "literal": "text"
     },
     "contents": {
-      "literal": "<div><span style=\"font-size: 32px;\"><b>Story</b></span></div><div><br></div><div><span style=\"font-size: 18px;\">In this functional example, you will see a IP Locator. The site </span><a href=\"https://iptwist.com\" style=\"font-size: 18px;\" target=\"_blank\">ipTwist</a><span style=\"font-size: 18px;\">&nbsp;provides a service for WhoIs GeoLocating; translating an IP Address to a location on the globe.</span></div><div><br></div><div><span style=\"font-size: 18px;\">For instance, the IP Address </span><b style=\"font-size: 18px;\">111.111.111.111</b><b style=\"color: rgb(206, 145, 120); font-size: 18px;\">&nbsp;</b><span style=\"font-size: 18px;\">will return Latitude </span><b style=\"font-size: 18px;\">35.68</b><span style=\"font-size: 18px;\">, Longitude </span><b style=\"font-size: 18px;\">136.69</b><span style=\"font-size: 18px;\">; which is in Tokyo, Japan. Add your IP address and confirm where you are!</span></div><div><br></div>"
+      "literal": "<div><span style=\"font-size: 32px;\"><b>Story</b></span></div><div><br></div><div><span style=\"font-size: 18px;\">In this functional example, you will see a IP Locator. The site abstractapi.com provides a service for GeoLocating; translating an IP Address to a location on the globe.</span></div><div><br></div><div><span style=\"font-size: 18px;\">For instance, the IP Address </span><b style=\"font-size: 18px;\">111.111.111.111</b><b style=\"color: rgb(206, 145, 120); font-size: 18px;\">&nbsp;</b><span style=\"font-size: 18px;\">will return Latitude </span><b style=\"font-size: 18px;\">35.68</b><span style=\"font-size: 18px;\">, Longitude </span><b style=\"font-size: 18px;\">136.69</b><span style=\"font-size: 18px;\">; which is in Tokyo, Japan. Add your IP address and confirm where you are!</span></div><div><br></div>"
     },
     "name": {
       "literal": "txt_story"

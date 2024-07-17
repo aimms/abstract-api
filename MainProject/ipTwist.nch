@@ -18,3 +18,6 @@
 "Copy_fnc_errorFunc" "fnc_abstractapi_errorFunc" "2024-07-16 09:47:37"
 "Copy_pr_GeolocateMakeRequest" "pr_abstractapi_GeolocateMakeRequest" "2024-07-16 09:47:45"
 "Copy_pr_GeolocateResponseHook" "pr_abstractapi_ResponseHook" "2024-07-16 09:47:57"
+"fnc_abstractapi_errorFunc" "fnc_httpErrorCodeToString" "2024-07-17 07:59:24"
+"pr_abstractapi_GeolocateMakeRequest" "pr_GeolocateMakeRequest" "2024-07-17 08:22:27"
+"pr_abstractapi_ResponseHook" "pr_ResponseHook" "2024-07-17 08:22:35"

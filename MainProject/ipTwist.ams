@@ -158,7 +158,7 @@ Model Main_iptwist {
 					Body: {
 						if sp_button = "OK" then
 							! pr_GeolocateMakeRequest();
-							pr_abstractapi_GeolocateMakeRequest();
+							pr_GeolocateMakeRequest();
 						endif ;
 					}
 					StringParameter sp_button {
@@ -176,44 +176,37 @@ Model Main_iptwist {
 	Section Leveraging_DEX {
 		StringParameter sp_apiKey;
 		Section abstractapi_implementations {
-			Function fnc_abstractapi_errorFunc {
+			Function fnc_httpErrorCodeToString {
 				Arguments: (ep_statusCode);
 				Range: string;
 				Body: {
-					sp_errMsg := "" ;
-					switch ep_statusCode do
-						'401' : sp_errMsg := "Invalid authentication" ;
-						'403' : sp_errMsg := "Monthly quota exceeded" ;
-						default: sp_errMsg := "unknown reason" ;
-					endswitch ;
-					fnc_abstractapi_errorFunc := sp_errMsg ;
+					sp_errMsg := formatString("%e %s", ep_statusCode, dex::HTTPStatusCodeDescription(ep_statusCode) );
+					fnc_httpErrorCodeToString := sp_errMsg ;
 				}
+				Comment: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses";
 				ElementParameter ep_statusCode {
 					Range: dex::HTTPStatusCodes;
 					Property: Input;
 				}
 				StringParameter sp_errMsg;
 			}
-			Procedure pr_abstractapi_GeolocateMakeRequest {
+			Procedure pr_GeolocateMakeRequest {
 				Body: {
 					! Starting current call.
 					geoAbstract::api::NewCallInstance(ep_callInstance);
-					
-					!! Fill in the data for making the request.
-					!geoAbstract::_Request::ip(ep_callInstance) := sp_myIPAddress ;
 					
 					! Install hook, which will copy the data or handle the error
 					geoAbstract::api::get_v1_::UserResponseHook := 
 						'pr_abstractapi_ResponseHook' ;
 					
 					! Start the request.
-					geoAbstract::api::get_v1_::apiCall(ep_callInstance,sp_apiKey, sp_myIPAddress);
+					geoAbstract::api::get_v1_::apiCall(ep_callInstance,sp_apiKey,sp_myIPAddress);
 				}
 				ElementParameter ep_callInstance {
 					Range: geoAbstract::Instances;
 				}
 			}
-			Procedure pr_abstractapi_ResponseHook {
+			Procedure pr_ResponseHook {
 				Arguments: (ep_callInstance);
 				Body: {
 					if geoAbstract::api::CallStatusCode(ep_callInstance) then
@@ -244,7 +237,7 @@ Model Main_iptwist {
 									sp_myIPAddress, ep_callInstance, 
 									geoAbstract::api::CallStatusCode(ep_callInstance), 
 									geoAbstract::api::CallErrorCode(ep_callInstance), 
-									fnc_abstractapi_errorFunc( geoAbstract::api::CallStatusCode(ep_callInstance) ) );
+									fnc_httpErrorCodeToString( geoAbstract::api::CallStatusCode(ep_callInstance) ) );
 					
 							default:
 								raise error formatString("geoAbstract::Geolocate(%s) failed (instance: \'%e\', status: %e, error: %e): %s",
@@ -291,7 +284,6 @@ Model Main_iptwist {
 		}
 		Procedure pr_startup {
 			Body: {
-				geoAbstract::api::APIServer := "https://ipgeolocation.abstractapi.com" ;
 				dex::client::DetermineProxyServer();
 			}
 		}

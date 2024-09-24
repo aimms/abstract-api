@@ -1,6 +1,6 @@
 ## ams_version=1.0
 
-Model Main_iptwist {
+Model Main_AbstractAPI {
 	Comment: "geoAbstract::api::APIServer";
 	Section Data_Model {
 		Section Quantities_and_Units {
@@ -206,12 +206,11 @@ Model Main_iptwist {
 					Range: geoAbstract::Instances;
 				}
 			}
-			Procedure pr_ResponseHook {
+			Procedure pr_abstractapi_ResponseHook {
 				Arguments: (ep_callInstance);
 				Body: {
 					if geoAbstract::api::CallStatusCode(ep_callInstance) then
 						switch geoAbstract::api::CallStatusCode(ep_callInstance) do
-					
 					
 							'200':
 								! Success, copy data retrieved to application core data structures.
@@ -226,13 +225,16 @@ Model Main_iptwist {
 									sp_zip          := geoAbstract::_inline_response_200::postal_code(         ep_callInstance);
 								endblock ;
 								geoAbstract::_inline_response_200::EmptyInstance(ep_callInstance);
+					
 								block ! Use data in core data structures for presentation purposes.
 									p_shownLocationLatitude(  ep_def_location ) := p_lat ;
 									p_shownLocationLongitude( ep_def_location ) := p_lon ;
 								endblock ;
 					
-							'400','401','402','403','404','405','406','407','408','409','410','411','412','413','414','415','416','417','421','422','423','424','425','426','427','428','429','431','451',
-							'500','501','502','503','504','505','506','507','508','510','511':
+							'400','401','402','403','404','405','406','407','408','409','410','411',
+							'412','413','414','415','416','417','421','422','423','424','425','426',
+							'427','428','429','431','451','500','501','502','503','504','505','506',
+							'507','508','510','511':
 								raise error formatString("geoAbstract::Geolocate(%s) failed (instance: \'%e\', status: %e, error: %e): %s",
 									sp_myIPAddress, ep_callInstance, 
 									geoAbstract::api::CallStatusCode(ep_callInstance), 

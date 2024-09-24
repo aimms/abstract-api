@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<Project AimmsVersion="24.5.4.2 unicode x64" ProjectUUID="AAACC8D5-1A88-48A5-9D64-574592C8256E">
-	<ModelFileName>ipTwist.ams</ModelFileName>
+<Project AimmsVersion="24.5.8.5 unicode x64" ProjectUUID="AAACC8D5-1A88-48A5-9D64-574592C8256E">
+	<ModelFileName>abstractAPI.ams</ModelFileName>
 	<AutoSaveAndBackup>
 		<DataBackup AtRegularInterval="true" EveryNMinutes="15" NumBackupsDatedToday="3" NumDaysBeforeToday="3" />
 	</AutoSaveAndBackup>

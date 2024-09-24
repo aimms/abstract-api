@@ -1,10 +1,10 @@
-# ip-twist
+# abstract-api
 
 ![WebUI](https://img.shields.io/badge/UI-WebUI-success)
 
-**Mirrored in:** https://github.com/aimms/ip-twist
+**Mirrored in:** https://github.com/aimms/abstract-api
 
-**How-to:** https://how-to.aimms.com/Articles/563/563-functional-ipTwist.html
+**How-to:** https://how-to.aimms.com/Articles/563/563-functional-geolocation-abstractapi.html
 
 ## Story
 

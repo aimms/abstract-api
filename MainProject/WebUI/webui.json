@@ -187,7 +187,7 @@
       "literal": "Layout11"
     },
     "maxcolumns": {
-      "literal": 2
+      "literal": 6
     },
     "maxrows": {
       "literal": 1
@@ -368,10 +368,10 @@
       ]
     },
     "center.latitude": {
-      "literal": 27.839076094777816
+      "literal": 8.581021215641854
     },
     "center.longitude": {
-      "literal": 134.82421875000003
+      "literal": 57.12890625000001
     },
     "heatmaps.__display_order__": {
       "literal": [
@@ -546,7 +546,7 @@
       "literal": "scl_obtainAPIkey"
     },
     "title": {
-      "literal": "ipTwist api key"
+      "literal": "Abstract API Key"
     },
     "views": {
       "literal": {}
@@ -557,7 +557,7 @@
       "literal": "text"
     },
     "contents": {
-      "literal": "<div><span style=\"color: rgb(64, 64, 64); background-color: rgb(252, 252, 252); font-family: futura-pt, sans-serif; font-size: 18px;\">To operate this example, you first need to obtain an API key, from </span><a href=\"https://iptwist.com/settings\" target=\"_blank\"><span style=\"background-color: rgb(252, 252, 252); font-family: futura-pt, sans-serif; font-size: 18px;\">ipTwist</span></a><span style=\"background-color: rgb(252, 252, 252); font-family: futura-pt, sans-serif; font-size: 18px;\">.</span></div><div><br></div><div><span style=\"font-size: 18px;\">After signing up, copy and paste the key below.&nbsp;</span></div>"
+      "literal": "<div><span style=\"color: rgb(64, 64, 64); font-family: futura-pt, sans-serif;\"><span style=\"font-size: 18px;\">To operate this example, you first need to obtain an API key, from </span></span><a href=\"https://app.abstractapi.com/api/ip-geolocation\" target=\"_blank\"><span style=\"color: rgb(230, 0, 0); font-family: futura-pt, sans-serif;\"><span style=\"font-size: 18px;\">Abstract API</span></span></a><span style=\"color: rgb(64, 64, 64); font-family: futura-pt, sans-serif;\"><span style=\"font-size: 18px;\">.</span></span></div><div><br></div><div><span style=\"font-size: 18px;\">After signing up, copy and paste the key below.&nbsp;</span></div>"
     },
     "name": {
       "literal": "txt_apiKeyHelp"

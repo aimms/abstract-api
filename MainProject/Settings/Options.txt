@@ -21,7 +21,7 @@ use_UTC_forCaseAndStartEndDate 1
 * SNOPT 7.2
 * NETSOL
 * Environment
-Project_Title "ipTwist"
+Project_Title "Abstract API"
 Startup_Procedure "pr_startup"
 Default_UI 0
 Open_WebUI_on_Startup 1

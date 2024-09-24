@@ -6,7 +6,7 @@
   --primary: #EB0000;
   --primaryLightest: #FA91AD;
   
-  --bg_app-logo: 15px 50% / 30px 30px no-repeat url(/app-resources/resources/images/ipTwist.png);
+  --bg_app-logo: 15px 50% / 30px 30px no-repeat url(/app-resources/resources/images/geoapi.png);
   --spacing_app-logo_width: 45px;
   --color_border_app-header-divider: var(--secondaryDark); /*line color after header*/
   --color_bg_app-canvas: url(/app-resources/resources/images/RightBackground.png) rgb(249, 249, 249) no-repeat left/contain; /*background color*/
@@ -15,14 +15,16 @@
   --color_text_edit-select-link: var(--primaryLight);
   --color_text_edit-select-link_hover: var(--primary);
   --color_bg_edit-select-link_inverted: var(--secondary);
-  --color_bg_button_primary: var(--secondary);
-  --color_bg_button_primary_hover: var(--secondaryLight);
+  --color_bg_button_primary: var(--primary);
+  --color_bg_button_primary_hover: var(--primaryLightest);
   --color_text_button_secondary: var(--secondary);
   --border_button_secondary: 1px solid var(--secondary);
   --color_text_button_secondary_hover: var(--primary);
   --border_button_secondary_hover: 1px solid var(--primary);
   --color_bg_widget-header: var(--primary);
   --border_widget-header: 3px solid var(--primaryLightest);
+
+  --color_text_widget-header:   whitesmoke;;
 
 /*---------------------------------------------------------------------
         WORKFLOW

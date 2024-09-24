@@ -1,6 +1,7 @@
 ﻿* AIMMS
 rounding_compatibility Aimms_3_7
 use_UTC_forCaseAndStartEndDate 1
+warning_not_initialized strict_warning_default
 * BARON 21
 * CBC 2.9
 * CONOPT 4.1

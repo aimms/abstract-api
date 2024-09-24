@@ -1,7 +1,12 @@
 ## ams_version=1.0
 
 Model Main_AbstractAPI {
-	Comment: "geoAbstract::api::APIServer";
+	Comment: {
+		"geoAbstract::api::APIServer
+		geoAbstract::api::APIKey
+		geoAbstract::api::APIServer
+		geoAbstract::InitializeAPIClient"
+	}
 	Section Data_Model {
 		Section Quantities_and_Units {
 			Comment: {
@@ -157,6 +162,10 @@ Model Main_AbstractAPI {
 					Arguments: (sp_button);
 					Body: {
 						if sp_button = "OK" then
+						
+							! pass Servernam and API key to OpenAPI library.
+							geoAbstract::api::APIServer := "ipgeolocation.abstractapi.com";
+							geoAbstract::api::APIKey(geoAbstract::api::secscheme) := sp_apiKey ;
 							! pr_GeolocateMakeRequest();
 							pr_GeolocateMakeRequest();
 						endif ;

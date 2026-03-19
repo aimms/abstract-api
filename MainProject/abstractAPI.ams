@@ -8,6 +8,7 @@ Model Main_AbstractAPI {
 		geoAbstract::InitializeAPIClient"
 	}
 	Section Data_Model {
+		Comment: "Contains all data model declarations including quantities, input parameters, and output results.";
 		Section Quantities_and_Units {
 			Comment: {
 				"This section contains all the units and quantities that are added automatically by AIMMS.
@@ -26,45 +27,62 @@ Model Main_AbstractAPI {
 			}
 		}
 		Section Inputs {
-			StringParameter sp_myIPAddress;
+			Comment: "Contains input identifiers provided by the user to drive the geolocation API call.";
+			StringParameter sp_myIPAddress {
+				Comment: "The IP address entered by the user to be geolocated via the Abstract API.";
+			}
 		}
 		Section Outputs {
+			Comment: "Contains output identifiers populated from the geolocation API response, displayed as read-only in the UI.";
 			StringParameter sp_city {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The city associated with the geolocated IP address.";
 			}
 			StringParameter sp_country {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The country name associated with the geolocated IP address.";
 			}
 			StringParameter sp_countryCode {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The ISO country code associated with the geolocated IP address.";
 			}
 			Parameter p_lat {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The latitude coordinate of the geolocated IP address.";
 			}
 			Parameter p_lon {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The longitude coordinate of the geolocated IP address.";
 			}
 			StringParameter sp_state {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The state or region associated with the geolocated IP address.";
 			}
 			StringParameter sp_timezone {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The timezone name associated with the geolocated IP address.";
 			}
 			StringParameter sp_zip {
 				webui::FlagsIdentifier: sp_readOnlyFlag;
+				Comment: "The postal code associated with the geolocated IP address.";
 			}
 		}
 	}
 	Section UI_Declarations {
+		Comment: "Contains all declarations related to the WebUI presentation layer, including logos, workflow steps, page-specific identifiers, and UI flags.";
 		StringParameter sp_logo {
 			Definition: "aimms_logo.png";
+			Comment: "File name of the application logo displayed in the WebUI.";
 		}
 		Section Workflow {
+			Comment: "Contains workflow and workflow step definitions that drive the WebUI multi-step navigation experience.";
 			StringParameter sp_myWorkflows {
 				IndexDomain: (webui::indexWorkflowOrder,webui::indexWorkflowSpec);
+				Comment: "Defines the available workflows and their specifications for the WebUI workflow panel.";
 			}
 			StringParameter sp_myWorkflowSteps {
 				IndexDomain: (webui::indexWorkflowOrder,webui::indexNoOfPages,webui::indexWorkflowPageSpec);
+				Comment: "Defines the individual steps (pages) within each workflow, including display text, icons, page IDs, and state.";
 				Definition: {
 					data 
 					{ ( 1, 1, displayText       ) : "Welcome"            ,  
@@ -95,40 +113,51 @@ Model Main_AbstractAPI {
 			}
 		}
 		Section Pages {
+			Comment: "Contains page-specific declarations for all WebUI pages in the application.";
 			Section Find_IP_Page {
+				Comment: "Contains all identifiers used on the Find IP page, including map display parameters, action buttons, and geolocation procedures.";
 				Set s_locations {
 					Index: i_loc;
 					Definition: data{ipLocation};
+					Comment: "Set of location identifiers used to display the geolocated IP position on the map widget.";
 				}
 				ElementParameter ep_def_location {
 					Range: s_locations;
 					Definition: first(s_locations);
+					Comment: "The default location element used to assign latitude and longitude for the map display.";
 				}
 				Parameter p_shownLocationLatitude {
 					IndexDomain: i_loc;
+					Comment: "The latitude value displayed on the map for the geolocated IP address.";
 				}
 				Parameter p_shownLocationLongitude {
 					IndexDomain: i_loc;
+					Comment: "The longitude value displayed on the map for the geolocated IP address.";
 				}
 				Parameter p_shownLocationSize {
 					IndexDomain: i_loc;
 					Definition: 2;
 					webui::AnnotationsIdentifier: sp_locationAnnotation;
 					webui::TooltipIdentifier: sp_locationTooltip(i_loc);
+					Comment: "The size of the location marker displayed on the map widget.";
 				}
 				StringParameter sp_locationTooltip {
 					IndexDomain: i_loc;
 					Definition: "You are here.";
+					Comment: "Tooltip text shown when hovering over the location marker on the map widget.";
 				}
 				StringParameter sp_locationAnnotation {
 					IndexDomain: i_loc;
 					Definition: "blue";
+					Comment: "Annotation color applied to the location marker on the map widget.";
 				}
 				Parameter p_shownLocationRefSize {
 					Definition: 5;
+					Comment: "Reference size used to scale location markers consistently on the map widget.";
 				}
 				StringParameter sp_findIpSecondaryActions {
 					IndexDomain: (webui::indexPageExtension,webui::indexPageActionSpec);
+					Comment: "Defines the secondary action buttons displayed on the Find IP page, including the GeoLocate action.";
 					Definition: {
 						{
 							( '1', 'displaytext' ) : "GeoLocate", 
@@ -140,51 +169,68 @@ Model Main_AbstractAPI {
 				}
 				Procedure pr_obtainGeolocationInformation {
 					Body: {
+						! Initialize the set of dialog actions available to the user.
 						s_loc_actions := {'CANCEL', 'OK'};
-						
+
+						! Proceed only if an IP address has been entered by the user.
 						if sp_myIPAddress then
+							! Provide a default placeholder API key if none has been set yet.
 							if sp_apiKey = "" then
 							    sp_apiKey := "<add your api key here>";
 						        endif;
-						
+
+							! Open the confirmation dialog so the user can review or update the API key before proceeding.
 							webui::OpenDialogPage(
-								pageId  :  'dialogensureapi', 
-								title   :  "Adding api key", 
-								actions :  s_loc_actions, 
+								pageId  :  'dialogensureapi',
+								title   :  "Adding api key",
+								actions :  s_loc_actions,
 								onDone  :  'pr_onDoneObtainGeolocationInformation');
 						else
+							! Warn the user that an IP address is required before geolocating.
 							raise warning "Please specify the IP address you want to be GeoLocated" ;
 						endif ;
 					}
-					Set s_loc_actions;
+					Comment: "Validates that an IP address is provided and opens the API key confirmation dialog before triggering the geolocation request.";
+					Set s_loc_actions {
+						Comment: "Local set holding the available dialog actions (CANCEL, OK) for the geolocation confirmation dialog.";
+					}
 				}
 				Procedure pr_onDoneObtainGeolocationInformation {
 					Arguments: (sp_button);
 					Body: {
 						if sp_button = "OK" then
-						
-							! pass Servernam and API key to OpenAPI library.
+
+							! Pass server name and API key to the OpenAPI library before making the call.
 							geoAbstract::api::APIServer := "ipgeolocation.abstractapi.com";
 							geoAbstract::api::APIKey(geoAbstract::api::secscheme) := sp_apiKey ;
-							! pr_GeolocateMakeRequest();
+
+							! Trigger the geolocation API request.
 							pr_GeolocateMakeRequest();
 						endif ;
 					}
+					Comment: "Callback procedure invoked when the user closes the API key dialog; proceeds with the geolocation request if the user confirmed with OK.";
 					StringParameter sp_button {
 						Property: Input;
+						Comment: "The label of the button pressed by the user in the confirmation dialog (e.g., OK or CANCEL).";
 					}
 				}
 			}
 		}
 		Section FlagsIdentifier {
+			Comment: "Contains flag identifier declarations used to control the editable state of WebUI widgets.";
 			StringParameter sp_readOnlyFlag {
 				Definition: "readonly";
+				Comment: "Flag value set to 'readonly' to make output widgets non-editable in the WebUI.";
 			}
 		}
 	}
 	Section Leveraging_DEX {
-		StringParameter sp_apiKey;
+		Comment: "Contains all identifiers and procedures that integrate with the DEX (Data Exchange) library to make and handle API calls.";
+		StringParameter sp_apiKey {
+			Comment: "The API key used to authenticate requests to the Abstract API geolocation service.";
+		}
 		Section abstractapi_implementations {
+			Comment: "Contains the implementation procedures and helper functions for communicating with the Abstract API and handling its responses.";
 			Function fnc_httpErrorCodeToString {
 				Arguments: (ep_statusCode);
 				Range: string;
@@ -196,27 +242,33 @@ Model Main_AbstractAPI {
 				ElementParameter ep_statusCode {
 					Range: dex::HTTPStatusCodes;
 					Property: Input;
+					Comment: "Input element parameter representing the HTTP status code to be converted to a descriptive string.";
 				}
-				StringParameter sp_errMsg;
+				StringParameter sp_errMsg {
+					Comment: "Local string parameter holding the formatted HTTP error message returned by the function.";
+				}
 			}
 			Procedure pr_GeolocateMakeRequest {
 				Body: {
 					! Starting current call.
 					geoAbstract::api::NewCallInstance(ep_callInstance);
-					
+
 					! Install hook, which will copy the data or handle the error
-					geoAbstract::api::get_v1_::UserResponseHook := 
+					geoAbstract::api::get_v1_::UserResponseHook :=
 						'pr_abstractapi_ResponseHook' ;
-					
+
 					! Start the request.
 					geoAbstract::api::get_v1_::apiCall(ep_callInstance,sp_apiKey,sp_myIPAddress);
 				}
+				Comment: "Creates a new API call instance, registers the response hook, and dispatches the geolocation request to the Abstract API.";
 				ElementParameter ep_callInstance {
 					Range: geoAbstract::Instances;
+					Comment: "Local element parameter holding the current API call instance identifier used to track this request.";
 				}
 			}
 			Procedure pr_abstractapi_ResponseHook {
 				Arguments: (ep_callInstance);
+				Comment: "Response hook called by the DEX library after the API call completes; handles the HTTP status code, copies data to output identifiers, and raises errors on failure.";
 				Body: {
 					if geoAbstract::api::CallStatusCode(ep_callInstance) then
 						switch geoAbstract::api::CallStatusCode(ep_callInstance) do
@@ -270,12 +322,16 @@ Model Main_AbstractAPI {
 				ElementParameter ep_callInstance {
 					Range: geoAbstract::Instances;
 					Property: Input;
+					Comment: "The API call instance identifier passed as input to identify which call this response belongs to.";
 				}
-				StringParameter _sp_curlMessage;
+				StringParameter _sp_curlMessage {
+					Comment: "Local string parameter holding the CURL error message retrieved when the API call fails at the transport level.";
+				}
 			}
 		}
 	}
 	Section Application_initialization_and_termination {
+		Comment: "Contains all lifecycle procedures that manage the startup and shutdown sequence of the application.";
 		Procedure MainInitialization {
 			Body: {
 				ProfilerStart();
@@ -284,8 +340,13 @@ Model Main_AbstractAPI {
 		}
 		Procedure PostMainInitialization {
 			Body: {
+				! Pre-fill a sample IP address (Tokyo, Japan) so the user can test immediately.
 				sp_myIPAddress := "111.111.111.111" ; ! Tokyo, Japan.
+
+				! Remove all output identifiers from the current inputs set to enforce read-only behavior.
 				CurrentInputs -= Outputs;
+
+				! Load all DEX mapping files required by the API client library.
 				dex::ReadAllMappings();
 			}
 			Comment: {
@@ -295,10 +356,14 @@ Model Main_AbstractAPI {
 		}
 		Procedure pr_startup {
 			Body: {
+				! Detect and configure the system proxy server for outgoing HTTP requests.
 				dex::client::DetermineProxyServer();
 			}
+			Comment: "Startup procedure that detects and configures the system proxy server for the DEX HTTP client.";
 		}
-		Procedure MainExecution;
+		Procedure MainExecution {
+			Comment: "Main execution procedure invoked when the application is run in batch mode; no batch logic is defined for this interactive application.";
+		}
 		Procedure PreMainTermination {
 			Body: {
 				return 1;

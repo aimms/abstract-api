@@ -4,7 +4,9 @@ LibraryModule openapi_geoAbstract {
 	Prefix: geoAbstract;
 	Interface: Public_Section;
 	Property: NoSave;
+	Comment: "OpenAPI client library for the Abstract API IP Geolocation service. Provides schema data, API call procedures, and response handling generated from the OpenAPI specification.";
 	Section Public_Section {
+		Comment: "Public interface of the library, exposing the API client initialization procedure, schema data, and all API call procedures.";
 		Procedure InitializeAPIClient {
 			Body: {
 				! Read mapping files for this library.
@@ -15,26 +17,34 @@ LibraryModule openapi_geoAbstract {
 					errh::MarkAsHandled(err);
 				endblock;
 				dex::ReadMappings(libFolder, "openapi-geoAbstract", 1);
-				
+
 				! Read server initialization data (e.g. service URL, api key, OAuth credentials)
 				apiInitFile := "../api-init/openapi-geoAbstract.txt";
 				if FileExists(apiInitFile) then
 					read from file apiInitFile;
 				endif ;
 			}
+			Comment: "Initializes the API client by locating the library folder, loading DEX mapping files, and optionally reading server initialization data such as the API server URL and API key.";
 			DeclarationSection Locals {
-				StringParameter libFolder;
-				StringParameter apiInitFile;
+				StringParameter libFolder {
+					Comment: "Local string parameter holding the resolved file system path to the library folder containing DEX mapping files.";
+				}
+				StringParameter apiInitFile {
+					Comment: "Local string parameter holding the path to the optional API initialization file containing server URL and credentials.";
+				}
 				ElementParameter err {
 					Range: errh::PendingErrors;
+					Comment: "Local element parameter used to capture and handle errors when resolving the library folder path.";
 				}
 			}
 		}
 		Section Schema_Data {
+			Comment: "Contains all schema data declarations that represent the structure of the API response, including instances, iterators, and response field modules.";
 			Set Instances {
 				SubsetOf: dex::Instances;
 				Index: i_instance, i_childInstance;
 				Parameter: CurrentInstance, NewInstance, CallInstance;
+				Comment: "Set of active API call instances, used to track concurrent or sequential requests and their associated response data.";
 			}
 			Set Iterators {
 				SubsetOf: Integers;
@@ -43,158 +53,199 @@ LibraryModule openapi_geoAbstract {
 			}
 			Module inline_response_200_ {
 				Prefix: _inline_response_200;
+				Comment: "Module containing all data fields of the HTTP 200 response schema returned by the Abstract API geolocation endpoint.";
 				StringParameter city {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The city name returned by the geolocation API for the queried IP address.";
 				}
 				Parameter city_geoname_id {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "The GeoNames database identifier for the city returned by the geolocation API.";
 				}
 				StringParameter continent {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The continent name returned by the geolocation API for the queried IP address.";
 				}
 				StringParameter continent_code {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The two-letter continent code returned by the geolocation API (e.g., EU, AS, NA).";
 				}
 				Parameter continent_geoname_id {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "The GeoNames database identifier for the continent returned by the geolocation API.";
 				}
 				StringParameter country {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The full country name returned by the geolocation API for the queried IP address.";
 				}
 				StringParameter country_code {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The ISO 3166-1 alpha-2 country code returned by the geolocation API.";
 				}
 				Parameter country_geoname_id {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "The GeoNames database identifier for the country returned by the geolocation API.";
 				}
 				Parameter country_is_eu {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "Flag indicating whether the country associated with the IP address is a member of the European Union (1 = yes, 0 = no).";
 				}
 				StringParameter ip_address {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The IP address that was submitted to the geolocation API, as echoed back in the response.";
 				}
 				Parameter latitude {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "The latitude coordinate returned by the geolocation API for the queried IP address.";
 				}
 				Parameter longitude {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "The longitude coordinate returned by the geolocation API for the queried IP address.";
 				}
 				StringParameter postal_code {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The postal or ZIP code returned by the geolocation API for the queried IP address.";
 				}
 				StringParameter region_ {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The state or region name returned by the geolocation API for the queried IP address.";
 				}
 				Parameter region_geoname_id {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: 0;
+					Comment: "The GeoNames database identifier for the region or state returned by the geolocation API.";
 				}
 				StringParameter region_iso_code {
 					IndexDomain: (geoAbstract::i_instance);
 					Default: "";
+					Comment: "The ISO 3166-2 code for the region or state returned by the geolocation API.";
 				}
 				Module connection_ {
 					Prefix: _connection;
+					Comment: "Module containing connection-related fields from the API response, describing the network provider associated with the IP address.";
 					Parameter autonomous_system_number {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: 0;
+						Comment: "The Autonomous System Number (ASN) of the network provider associated with the queried IP address.";
 					}
 					StringParameter autonomous_system_organization {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The name of the organization that owns the Autonomous System associated with the queried IP address.";
 					}
 					StringParameter connection_type {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The type of internet connection associated with the IP address (e.g., Broadband, Corporate, Cellular).";
 					}
 					StringParameter isp_name {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The name of the Internet Service Provider (ISP) for the queried IP address.";
 					}
 					StringParameter organization_name {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The name of the organization associated with the queried IP address.";
 					}
 				}
 				Module currency_ {
 					Prefix: _currency;
+					Comment: "Module containing currency-related fields from the API response for the country associated with the queried IP address.";
 					StringParameter currency_code {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The ISO 4217 currency code of the country associated with the queried IP address.";
 					}
 					StringParameter currency_name {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The full name of the currency used in the country associated with the queried IP address.";
 					}
 				}
 				Module flag_ {
 					Prefix: _flag;
+					Comment: "Module containing flag representation fields from the API response for the country associated with the queried IP address.";
 					StringParameter emoji {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The emoji flag character for the country associated with the queried IP address.";
 					}
 					StringParameter png {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "URL to the PNG image of the flag for the country associated with the queried IP address.";
 					}
 					StringParameter svg {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "URL to the SVG image of the flag for the country associated with the queried IP address.";
 					}
 					StringParameter unicode_ {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The Unicode representation of the flag for the country associated with the queried IP address.";
 					}
 				}
 				Module security_ {
 					Prefix: _security;
+					Comment: "Module containing security-related fields from the API response, indicating whether the queried IP address uses privacy-masking technology.";
 					Parameter is_vpn {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: 0;
+						Comment: "Flag indicating whether the queried IP address is associated with a VPN service (1 = yes, 0 = no).";
 					}
 				}
 				Module timezone_ {
 					Prefix: _timezone;
+					Comment: "Module containing timezone-related fields from the API response for the location of the queried IP address.";
 					StringParameter abbreviation {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The abbreviated timezone identifier (e.g., JST, UTC, EST) for the location of the queried IP address.";
 					}
 					StringParameter current_time {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The current local time at the location of the queried IP address, as returned by the API.";
 					}
 					Parameter gmt_offset {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: 0;
+						Comment: "The offset in seconds from GMT/UTC for the timezone of the queried IP address location.";
 					}
 					Parameter is_dst {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: 0;
+						Comment: "Flag indicating whether Daylight Saving Time is currently in effect at the location of the queried IP address (1 = yes, 0 = no).";
 					}
 					StringParameter name_ {
 						IndexDomain: (geoAbstract::i_instance);
 						Default: "";
+						Comment: "The full timezone name (e.g., Asia/Tokyo, Europe/London) for the location of the queried IP address.";
 					}
 				}
 				Procedure EmptyInstance {
 					Arguments: (instance_);
 					Body: {
+						! Add the target instance to the set of instances to empty, enabling index-based emptying.
 						InstancesToEmpty += instance_;
-						
+
+						! Empty all response fields for the target instance across all schema sub-modules.
 						empty city(i_empty_inst), city_geoname_id(i_empty_inst), _connection::autonomous_system_number(i_empty_inst),
 						      _connection::autonomous_system_organization(i_empty_inst), _connection::connection_type(i_empty_inst),
 						      _connection::isp_name(i_empty_inst), _connection::organization_name(i_empty_inst), continent(i_empty_inst),
@@ -211,10 +262,12 @@ LibraryModule openapi_geoAbstract {
 						ElementParameter instance_ {
 							Range: Instances;
 							Property: Input;
+							Comment: "The API call instance whose response data should be cleared from all schema parameters.";
 						}
 						Set InstancesToEmpty {
 							SubsetOf: Instances;
 							Index: i_empty_inst;
+							Comment: "Local set containing the instance to be emptied, used to drive the indexed empty statement.";
 						}
 					}
 				}
@@ -222,6 +275,7 @@ LibraryModule openapi_geoAbstract {
 		}
 		Module API_Client_Procedures {
 			Prefix: api;
+			Comment: "Module containing all API client infrastructure declarations and the generated API call procedure for the Abstract API geolocation endpoint.";
 			Set RequestHeaders {
 				Index: reqhdr;
 				Comment: "Set containing the request headers used by any method in the OpenAPI specification";
@@ -302,6 +356,7 @@ LibraryModule openapi_geoAbstract {
 			Set RequestParts {
 				Index: reqpart;
 				InitialData: data { 'requestbody' };
+				Comment: "Set of request body parts used when constructing multipart or single-body API requests.";
 			}
 			StringParameter MimeHeaderValue {
 				IndexDomain: (i_instance, reqpart, reqhdr);
@@ -372,6 +427,7 @@ LibraryModule openapi_geoAbstract {
 			}
 			Module get_v1__ {
 				Prefix: get_v1_;
+				Comment: "Module implementing the GET /v1/ endpoint of the Abstract API geolocation service, including the API call procedure and its response callback.";
 				Procedure apiCall {
 					Arguments: (callInstance,api_key,ip_address,fields);
 					Body: {
@@ -469,6 +525,7 @@ LibraryModule openapi_geoAbstract {
 				}
 				Procedure callback {
 					Arguments: (theRequest,statusCode,errorCode);
+					Comment: "Internal DEX callback procedure invoked after the API request completes; stores the status and error codes, deserializes the response body, and calls the user response hook.";
 					Body: {
 						! Re-create the callInstance element from theRequest and set CurrentInstance needed by the schema mapping files
 						callInstance := StringToElement(Instances, theRequest);
@@ -509,24 +566,30 @@ LibraryModule openapi_geoAbstract {
 					DeclarationSection Locals {
 						StringParameter theRequest {
 							Property: Input;
+							Comment: "The DEX request identifier string, used to look up the corresponding call instance in the Instances set.";
 						}
 						Parameter statusCode {
 							Property: Input;
+							Comment: "The raw HTTP status code integer returned by the DEX client after the API call completes.";
 						}
 						Parameter errorCode {
 							Property: Input;
+							Comment: "The CURL error code returned by the DEX client; non-zero indicates a transport-level failure.";
 						}
 						ElementParameter callInstance {
 							Range: Instances;
 							Default: '';
+							Comment: "Local element parameter resolved from theRequest string to identify the specific API call instance being processed.";
 						}
 						ElementParameter status_ {
 							Range: dex::HTTPStatusCodes;
 							Default: '';
+							Comment: "Local element parameter holding the HTTP status code as an element of the DEX status codes set.";
 						}
 						StringParameter responseFileMapping {
 							IndexDomain: (resppart);
 							Default: "";
+							Comment: "Local mapping from response body part to the DEX schema mapping file used to deserialize the response.";
 						}
 					}
 				}
@@ -569,11 +632,15 @@ LibraryModule openapi_geoAbstract {
 		}
 	}
 	Section Private_Section {
+		Comment: "Private section of the library containing internal lifecycle procedures not exposed through the public interface.";
 		Section Library_Initialization_and_Termination {
+			Comment: "Contains the standard AIMMS library lifecycle procedures that manage the initialization and termination of the openapi-geoAbstract library.";
 			Procedure LibraryInitialization {
 				Body: {
+					! Call the public API client initialization to load mappings and server configuration.
 					InitializeAPIClient;
 				}
+				Comment: "Initializes the library by invoking InitializeAPIClient to load DEX mappings and optional server configuration data.";
 			}
 			Procedure PostLibraryInitialization {
 				Comment: {
